@@ -9,18 +9,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{08105199
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{862FEF26-154C-4316-93B3-9D21C71C1C76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mahzan.DBHelper", "tools\Mahzan.DBHelper\Mahzan.DBHelper.csproj", "{B8F4393A-B42F-4C80-B828-2E64633505A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mahzan.DBHelper", "tools\Mahzan.DBHelper\Mahzan.DBHelper.csproj", "{B8F4393A-B42F-4C80-B828-2E64633505A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mahzan.Migrations", "src\Mahzan.Migrations\Mahzan.Migrations.csproj", "{42C627AA-6D2E-4423-9ABD-1214222AEF53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mahzan.Migrations", "src\Mahzan.Migrations\Mahzan.Migrations.csproj", "{42C627AA-6D2E-4423-9ABD-1214222AEF53}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AAD7AD87-2B99-4F1F-B9A7-F0C8E6CC8FAF}"
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.override.example.yml = docker-compose.override.example.yml
 		docker-compose.yml = docker-compose.yml
-		Dockerfile = Dockerfile
+		src\Mahzan.API\Dockerfile = src\Mahzan.API\Dockerfile
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mahzan.API", "src\Mahzan.API\Mahzan.API.csproj", "{B5C7EF53-AE12-44F0-9545-D31430C01946}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mahzan.API", "src\Mahzan.API\Mahzan.API.csproj", "{B5C7EF53-AE12-44F0-9545-D31430C01946}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mahzan.API", "src\Mahzan.API\Mahzan.API.csproj", "{B5C7EF53-AE12-44F0-9545-D31430C01946}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mahzan.Business", "src\Mahzan.Business\Mahzan.Business.csproj", "{70B18562-23C3-44CB-BC0F-E49723F6E064}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{B5C7EF53-AE12-44F0-9545-D31430C01946}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5C7EF53-AE12-44F0-9545-D31430C01946}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5C7EF53-AE12-44F0-9545-D31430C01946}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70B18562-23C3-44CB-BC0F-E49723F6E064}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70B18562-23C3-44CB-BC0F-E49723F6E064}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70B18562-23C3-44CB-BC0F-E49723F6E064}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70B18562-23C3-44CB-BC0F-E49723F6E064}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +54,7 @@ Global
 		{B8F4393A-B42F-4C80-B828-2E64633505A3} = {862FEF26-154C-4316-93B3-9D21C71C1C76}
 		{42C627AA-6D2E-4423-9ABD-1214222AEF53} = {1C5A6A86-8B13-4718-BC88-C414B731BAC9}
 		{B5C7EF53-AE12-44F0-9545-D31430C01946} = {1C5A6A86-8B13-4718-BC88-C414B731BAC9}
+		{70B18562-23C3-44CB-BC0F-E49723F6E064} = {1C5A6A86-8B13-4718-BC88-C414B731BAC9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {65EEBC4E-9838-4C4B-BE02-4A90AE4DA8CF}

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Mahzan.DBHelper": {
+      "commandName": "Project",
+      "commandLineArgs": "migrate"
+    }
+  }
+}

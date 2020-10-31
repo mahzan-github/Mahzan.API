@@ -10,14 +10,7 @@ namespace Mahzan.DBHelper
         {
             var executor = new MahzanScriptExecutor();
 
-
             int exitCode = Parser.Default.ParseArguments<
-                MigrateOptions>(args)
-                  .MapResult(
-                    (MigrateOptions opts) => executor.InvokeMigration(opts),
-                    errs => 1);
-
-            /*int exitCode = Parser.Default.ParseArguments<
                 MigrateOptions,
                 DataOptions,
                 UtilOptions,
@@ -28,7 +21,7 @@ namespace Mahzan.DBHelper
                 (DataOptions opts) => executor.InvokeDataScript(opts),
                 (UtilOptions opts) => executor.InvokeUtilScript(opts),
                 (ListOptions opts) => executor.InvokeListScripts(opts),
-                errs => 1);*/
+                errs => 1);
 
             Environment.ExitCode = exitCode;
         }

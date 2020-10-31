@@ -1,13 +1,11 @@
-﻿using DbUp;
-using Mahzan.DBHelper.CommandLine;
-using Mahzan.Migrations;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
+using Mahzan.Migrations;
+using Mahzan.DBHelper.CommandLine;
+using DbUp;
+using Microsoft.Extensions.Configuration;
 using ConfigurationExtensions = Microsoft.Extensions.Configuration.ConfigurationExtensions;
 
 namespace Mahzan.DBHelper
@@ -56,7 +54,7 @@ namespace Mahzan.DBHelper
         {
             var configuration = LoadConfiguration(options.ProductionMode);
 
-            var connectionString = ConfigurationExtensions.GetConnectionString(configuration, "RiskMonitoringEngine");
+            var connectionString = ConfigurationExtensions.GetConnectionString(configuration, "Mahzan");
 
             var upgrader = DeployChanges.To
               .PostgresqlDatabase(connectionString)
@@ -91,7 +89,7 @@ namespace Mahzan.DBHelper
             var configuration = LoadConfiguration(productionMode);
 
             var upgrader = DeployChanges.To
-              .PostgresqlDatabase(ConfigurationExtensions.GetConnectionString(configuration, "RiskMonitoringEngine"))
+              .PostgresqlDatabase(ConfigurationExtensions.GetConnectionString(configuration, "Mahzan"))
               .WithSelectedScripts(
                 scriptType,
                 scriptNameFilter
@@ -156,7 +154,7 @@ namespace Mahzan.DBHelper
         private IConfiguration LoadConfiguration(bool productionMode)
         {
             var currentAssembly = Assembly.GetAssembly(typeof(MahzanScriptExecutor));
-            var stream = currentAssembly.GetManifestResourceStream("Conekta.Risk.Monitoring.Engine.Tools.DBHelper.appsettings.json");
+            var stream = currentAssembly.GetManifestResourceStream("Mahzan.DBHelper.appsettings.json");
 
             var configurationBuilder = FileConfigurationExtensions.SetBasePath(new ConfigurationBuilder(), Directory.GetCurrentDirectory())
               .AddJsonStream(stream);

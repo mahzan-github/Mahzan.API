@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Mahzan.API.Exceptions;
 using Mahzan.API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,6 +36,13 @@ namespace Mahzan.API
                 .ConfigureServices(
                     _configuration.GetConnectionString("Mahzan")
                 );
+
+            //Handle Errors
+            services.AddMvc(options => { options.Filters.Add(typeof(UnhandledException)); })
+                    .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                    .ConfigureApiBehaviorOptions(options => {
+                        options.InvalidModelStateResponseFactory = InvalidModelStateHandler.Handler;
+                    });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

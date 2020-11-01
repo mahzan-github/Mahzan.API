@@ -1,4 +1,5 @@
-﻿using Mahzan.API.Services.Swagger;
+﻿using Mahzan.API.Services.Dependencies;
+using Mahzan.API.Services.Swagger;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
@@ -19,6 +20,9 @@ namespace Mahzan.API.Services
         {
             //Swagger
             SwaggerService.AddSwagger(services);
+
+            //Dependencies
+            DependenciesService.AddDependencies(services, connectionString);
         }
 
 

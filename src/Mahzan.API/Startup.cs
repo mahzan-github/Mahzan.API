@@ -31,7 +31,7 @@ namespace Mahzan.API
         {
             services.AddControllers();
 
-            //Servicios Adicionales
+            //Servicios Dependencies
             services
                 .ConfigureServices(
                     _configuration.GetConnectionString("Mahzan")
@@ -43,6 +43,7 @@ namespace Mahzan.API
                     .ConfigureApiBehaviorOptions(options => {
                         options.InvalidModelStateResponseFactory = InvalidModelStateHandler.Handler;
                     });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

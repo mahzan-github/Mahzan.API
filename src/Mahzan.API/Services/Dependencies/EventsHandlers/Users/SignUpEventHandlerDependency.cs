@@ -1,4 +1,5 @@
 ﻿using Mahzan.Business.EventsHandlers.Users.SignUp;
+using Mahzan.Business.EventsServices.Email;
 using Mahzan.Dapper.Repositories.Users.SignUp;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -16,7 +17,8 @@ namespace Mahzan.API.Services.Dependencies.EventsHandlers.Users
             services
                 .AddScoped<ISignUpEventHandler>(
                 x => new SignUpEventHandler(
-                    x.GetService<ISignUpRepository>()
+                    x.GetService<ISignUpRepository>(),
+                    x.GetService<IEmailSender>()
                     )
                 );
         }

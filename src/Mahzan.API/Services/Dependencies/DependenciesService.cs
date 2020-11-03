@@ -1,5 +1,6 @@
 ﻿
 using Mahzan.API.Services.Dependencies.EventsHandlers.Users;
+using Mahzan.API.Services.Dependencies.EventsServices.Email;
 using Mahzan.API.Services.Dependencies.Repositories.Users;
 using Mahzan.API.Services.Dependencies.Rules.Users;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,7 +26,10 @@ namespace Mahzan.API.Services.Dependencies
             ConfigureRepositories(services, connectionString);
 
             //Events Handlers
+            ConfigureEventsHandlers(services, connectionString);
 
+            //Events Services
+            ConfigureEventsServices(services, connectionString);
         }
 
         private static void ConfigureRepositories(
@@ -52,8 +56,14 @@ namespace Mahzan.API.Services.Dependencies
             SignUpEventHandlerDependency.Configure(services);
         }
 
+        private static void ConfigureEventsServices(
+            IServiceCollection services,
+            string connectionString)
+        {
+            //Email
+            EmailSernderDependency.Configure(services);
+        }
 
-        
     }
 
 

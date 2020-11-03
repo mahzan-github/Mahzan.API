@@ -57,8 +57,13 @@ namespace Mahzan.API.Controllers.V1
                     };
                 }
             }
-            catch (ArgumentException ex)
+            catch (ServiceInvalidOperationException ex)
             {
+                throw new ServiceInvalidOperationException(ex);
+            }
+            catch (ServiceArgumentException ex)
+            {
+
                 throw new ServiceArgumentException(ex);
             }
 

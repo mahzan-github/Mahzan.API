@@ -29,7 +29,6 @@ create table if not exists members
     "name"                    varchar(50)     NOT NULL,
     phone                     varchar(18)     NOT NULL,
     user_id                   uuid            NOT NULL,
-
     PRIMARY KEY (member_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );

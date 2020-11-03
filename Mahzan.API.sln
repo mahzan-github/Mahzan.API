@@ -24,9 +24,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mahzan.API", "src\Mahzan.AP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mahzan.Business", "src\Mahzan.Business\Mahzan.Business.csproj", "{70B18562-23C3-44CB-BC0F-E49723F6E064}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mahzan.Models", "src\Mahzan.Models\Mahzan.Models.csproj", "{6F3B2D8E-3C8B-4D31-B12B-80CD114678CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mahzan.Models", "src\Mahzan.Models\Mahzan.Models.csproj", "{6F3B2D8E-3C8B-4D31-B12B-80CD114678CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mahzan.Dapper", "src\Mahzan.Dapper\Mahzan.Dapper.csproj", "{72E7B1C8-1F76-46B9-93D0-8D92ED1C9A87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mahzan.Dapper", "src\Mahzan.Dapper\Mahzan.Dapper.csproj", "{72E7B1C8-1F76-46B9-93D0-8D92ED1C9A87}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

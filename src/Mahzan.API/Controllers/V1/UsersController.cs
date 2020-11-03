@@ -11,6 +11,7 @@ using Mahzan.Business.EventsHandlers.Users.SignUp;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Mahzan.API.Controllers.V1
 {
@@ -22,10 +23,14 @@ namespace Mahzan.API.Controllers.V1
 
         private readonly ISignUpEventHandler _signUpEventHandler;
 
+        private readonly ILogger<UsersController> _logger;
+
         public UsersController(
-            ISignUpEventHandler signUpEventHandler)
+            ISignUpEventHandler signUpEventHandler, 
+            ILogger<UsersController> logger)
         {
             _signUpEventHandler = signUpEventHandler;
+            _logger = logger;
         }
 
         [AllowAnonymous]
@@ -39,6 +44,8 @@ namespace Mahzan.API.Controllers.V1
 
             try
             {
+                _logger.LogInformation($"Registro de Usuario {command.UserName}");
+
                 Models.Entities.Users user = await _signUpEventHandler
                     .HandleEvent(new SignUpEvent
                     {
@@ -56,6 +63,8 @@ namespace Mahzan.API.Controllers.V1
                         UserId = user.UserId
                     };
                 }
+
+
             }
             catch (ServiceInvalidOperationException ex)
             {

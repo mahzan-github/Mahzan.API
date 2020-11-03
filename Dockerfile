@@ -6,9 +6,9 @@ COPY ./*.sln ./
 COPY src/*/*.csproj ./
 RUN for file in $(ls *.csproj); do mkdir -p src/${file%.*}/ && mv $file src/${file%.*}/; done
 
-#RUN dotnet restore "./src/Mahzan.Models/Mahzan.Models.csproj"
-#RUN dotnet restore "./src/Mahzan.DataAccess/Mahzan.DataAccess.csproj"
-#RUN dotnet restore "./src/Mahzan.Business/Mahzan.Business.csproj"
+RUN dotnet restore "./src/Mahzan.Models/Mahzan.Models.csproj"
+RUN dotnet restore "./src/Mahzan.Dapper/Mahzan.Dapper.csproj"
+RUN dotnet restore "./src/Mahzan.Business/Mahzan.Business.csproj"
 RUN dotnet restore "./src/Mahzan.API/Mahzan.API.csproj"
 
 # copy everything else and build app

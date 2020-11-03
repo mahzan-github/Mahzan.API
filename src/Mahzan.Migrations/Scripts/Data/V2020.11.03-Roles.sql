@@ -8,4 +8,4 @@ values('fb4b765a-7fb9-4293-a548-924f6fc6dfb2','MEMBER')
 on conflict(role_id)
 	do update 
 		set name = excluded.name
-		where current.name <> excluded.name
+		where current.name <> excluded.name;

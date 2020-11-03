@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Mahzan.API.Exceptions;
 using Mahzan.API.Services;
+using Mahzan.Business.EventsServices.Email;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -43,6 +44,11 @@ namespace Mahzan.API
                     .ConfigureApiBehaviorOptions(options => {
                         options.InvalidModelStateResponseFactory = InvalidModelStateHandler.Handler;
                     });
+
+            //Email 
+            services.Configure<EmailSettings>(
+                _configuration.GetSection("EmailSettings")
+                );
 
         }
 

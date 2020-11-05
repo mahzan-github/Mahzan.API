@@ -38,6 +38,7 @@ namespace Mahzan.API.Services.Dependencies
         {
             //Users
             SignUpRepositoryDependency.Configure(services, connectionString);
+            LogInRepositoryDependency.Configure(services, connectionString);
         }
 
         private static void ConfigureRules(
@@ -46,6 +47,7 @@ namespace Mahzan.API.Services.Dependencies
         {
             //Users
             SignUpRulesDependency.Configure(services, connectionString);
+            LogInRulesDependency.Configure(services, connectionString);
         }
 
         private static void ConfigureEventsHandlers(
@@ -54,6 +56,7 @@ namespace Mahzan.API.Services.Dependencies
         {
             //Users
             SignUpEventHandlerDependency.Configure(services);
+            LoginEventHandlerDependency.Configure(services);
         }
 
         private static void ConfigureEventsServices(

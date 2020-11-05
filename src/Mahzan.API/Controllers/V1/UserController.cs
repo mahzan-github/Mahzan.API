@@ -19,9 +19,9 @@ using Microsoft.Extensions.Logging;
 namespace Mahzan.API.Controllers.V1
 {
     [ApiVersion("1")]
-    [Route("v{version:apiVersion}/[controller]")]
+    [Route("v{version:apiVersion}")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UserController : ControllerBase
     {
 
         private readonly ISignUpEventHandler _signUpEventHandler;
@@ -30,13 +30,13 @@ namespace Mahzan.API.Controllers.V1
 
         private readonly ILoginEventHandler _loginEventHandler;
 
-        private readonly ILogger<UsersController> _logger;
+        private readonly ILogger<UserController> _logger;
 
-        public UsersController(
+        public UserController(
             ISignUpEventHandler signUpEventHandler,
             IConfirmEmailRepository confirmEmailRepository,
             ILoginEventHandler loginEventHandler,
-            ILogger<UsersController> logger)
+            ILogger<UserController> logger)
         {
             //Events Handlers
             _signUpEventHandler = signUpEventHandler;
@@ -50,7 +50,7 @@ namespace Mahzan.API.Controllers.V1
         }
 
         [AllowAnonymous]
-        [HttpPost("sign-up")]
+        [HttpPost("user:sign-up")]
         [ProducesResponseType(typeof(SignUpViewModel), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> SignUp([FromBody] RegistroCommand command)
         {
@@ -95,7 +95,7 @@ namespace Mahzan.API.Controllers.V1
         }
 
         [AllowAnonymous]
-        [HttpGet("confirm-email")]
+        [HttpGet("user:confirm-email")]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> ConfirmEmail(string userId, string tokenConfrimEmail)
         {
@@ -114,7 +114,7 @@ namespace Mahzan.API.Controllers.V1
         }
 
         [AllowAnonymous]
-        [HttpGet("sign-in")]
+        [HttpGet("user:sign-in")]
         [ProducesResponseType(typeof(LogInViewModel), (int)HttpStatusCode.OK)]
         
         public async Task<IActionResult> SignIn(string userName, string passowrd)

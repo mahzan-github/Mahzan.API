@@ -49,9 +49,66 @@ create table if not exists roles
 create table if not exists user_role
 (
     user_id                 uuid            NOT NULL,
-    role_id                 uuid     NOT NULL,
+    role_id                 uuid            NOT NULL,
 
     PRIMARY KEY (user_id,role_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (role_id) REFERENCES roles(role_id)
 );
+
+/*  Table Name:     Companies
+    Description:    Contiene las compañias de un usuario
+*/
+create table if not exists companies
+(
+    company_id              uuid            NOT NULL,
+    rfc                     varchar(13)     NOT NULL,
+    curp                    varchar(18)     NULL,
+    comercial_name          varchar(50)     NOT NULL,
+    business_name           varchar(50)     NOT NULL,
+    email                   varchar(50)     NOT NULL,
+    active                  boolean         NOT NULL,
+    member_id               uuid            NOT NULL,
+    tax_regime_code_id      uuid            NULL, -- Codigo de Regimen Fiscal
+    office_phone            varchar(18)     NULL,
+    mobile_phone            varchar(18)     NULL,
+    additional_information  varchar(500)    NULL
+
+    PRIMARY KEY (company_id),
+    FOREIGN KEY (member_id) REFERENCES members(member_id)
+    FOREIGN KEY (tax_regime_code_id) REFERENCES tax_regime_codes(tax_regime_code_id)
+);
+
+/*  Table Name:     Company Adress
+    Description:    Contiene la dirección de una compañia
+*/
+create table if not exists tax_regime_codes
+(
+    tax_regime_code_id      uuid            NOT NULL,
+    code                    varchar(3)      NOT NULL,
+    description             varchar(250)    NOT NULL,
+    moral_person            boolean         NULL
+    physical_person         boolean         NULL
+    PRIMARY KEY (tax_regime_code_id)
+);
+
+/*  Table Name:     Company Adress
+    Description:    Contiene la dirección de una compañia
+*/
+create table if not exists companies_addresses
+(
+    company_adress_id       uuid            NOT NULL,
+    adress_type             varchar(25)     NOT NULL, --FISCAL_LOCATION,EXPEDITION_PLACE
+    street                  varchar(50)     NOT NULL,
+    exterior_number         varchar(25)     NOT NULL,
+    internal_number         varchar(25)     NOT NULL,
+    postal_code             uuid            NOT NULL,
+    company_id              uuid            NOT NULL,
+
+    PRIMARY KEY (company_adress_id),
+    FOREIGN KEY (company_id) REFERENCES companies(company_id)
+);
+
+/*  Table Name:     Postal Codes
+    Description:    Contiene los códigos postales
+*/

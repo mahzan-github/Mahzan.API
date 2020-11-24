@@ -54,6 +54,17 @@ namespace Mahzan.API.Controllers.V1
                             MobilePhone = command.CompanyCommand.MobilePhone,
                             AdditionalInformation = command.CompanyCommand.AdditionalInformation
                         },
+                        CompanyAdressesEvent = command
+                                               .CompanyAdressesCommand
+                                               .Select(c => new CompanyAdressEvent {
+                                                    AdressType = c.AdressType,
+                                                    Street = c.Street,
+                                                    ExteriorNumber = c.ExteriorNumber,
+                                                    InternalNumber = c.InternalNumber,
+                                                    PostalCode = c.PostalCode,
+                                                    CompanyId = c.CompanyId
+                                               })
+                                               .ToList(),
                         MemberId = MemberId
                     });
             }

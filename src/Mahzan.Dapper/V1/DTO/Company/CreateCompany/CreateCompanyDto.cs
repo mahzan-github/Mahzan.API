@@ -21,7 +21,7 @@ namespace Mahzan.Dapper.V1.DTO.Company.CreateCompany
 
         public string CommercialName { get; set; }
 
-        public string BusinesslName { get; set; }
+        public string BusinessName { get; set; }
 
         public string Email { get; set; }
 

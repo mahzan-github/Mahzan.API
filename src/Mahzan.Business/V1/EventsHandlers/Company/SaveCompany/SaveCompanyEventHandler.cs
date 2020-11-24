@@ -65,7 +65,31 @@ namespace Mahzan.Business.V1.EventsHandlers.Company.SaveCompany
             companyId = await _createCompanyRepository
                 .Handle(new CreateCompanyDto
                 {
-
+                    CompanyDto = new Dapper.V1.DTO.Company.CreateCompany.CompanyDto
+                    {
+                        RFC = createCompanyEvent.CompanyEvent.RFC,
+                        CURP = createCompanyEvent.CompanyEvent.CURP,
+                        CommercialName = createCompanyEvent.CompanyEvent.CommercialName,
+                        BusinessName = createCompanyEvent.CompanyEvent.BusinessName,
+                        Email = createCompanyEvent.CompanyEvent.Email,
+                        TaxRegimeCodeId = createCompanyEvent.CompanyEvent.TaxRegimeCodeId,
+                        OfficePhone = createCompanyEvent.CompanyEvent.OfficePhone,
+                        MobilePhone = createCompanyEvent.CompanyEvent.MobilePhone,
+                        AdditionalInformation = createCompanyEvent.CompanyEvent.AdditionalInformation
+                    },
+                    CompanyAdressesDto = createCompanyEvent
+                                               .CompanyAdressesEvent
+                                               .Select(c => new Dapper.V1.DTO.Company.CreateCompany.CompanyAdressDto
+                                               {
+                                                   AdressType = c.AdressType,
+                                                   Street = c.Street,
+                                                   ExteriorNumber = c.ExteriorNumber,
+                                                   InternalNumber = c.InternalNumber,
+                                                   PostalCode = c.PostalCode,
+                                                   CompanyId = c.CompanyId
+                                               })
+                                               .ToList(),
+                    MemberId = createCompanyEvent.MemberId
                 });
 
             return companyId;

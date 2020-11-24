@@ -1,4 +1,5 @@
 ﻿using Mahzan.Business.V1.Events.Company;
+using Mahzan.Business.V1.Validations.Company.SaveCompany;
 using Mahzan.Dapper.V1.DTO.Company.CreateCompany;
 using Mahzan.Dapper.V1.DTO.Company.UpdateCompany;
 using Mahzan.Dapper.V1.Filters._Base.Companies;
@@ -22,19 +23,28 @@ namespace Mahzan.Business.V1.EventsHandlers.Company.SaveCompany
 
         private readonly IUpdateCompanyRepository _updateCompanyRepository;
 
+        private readonly ISaveCompanyValidations _saveCompanyValidations;
+
         public SaveCompanyEventHandler(
              ICompaniesRepository companiesRepository,
              ICreateCompanyRepository createCompanyRepository,
-             IUpdateCompanyRepository updateCompanyRepository)
+             IUpdateCompanyRepository updateCompanyRepository, 
+             ISaveCompanyValidations saveCompanyValidations)
         {
             _companiesRepository = companiesRepository;
             _createCompanyRepository = createCompanyRepository;
             _updateCompanyRepository = updateCompanyRepository;
+            _saveCompanyValidations = saveCompanyValidations;
         }
 
         public async Task<Guid> Handler(SaveCompanyEvent saveCompanyEvent)
         {
             Guid companyId = Guid.Empty;
+
+            //Valida Datos de Evento
+            await _saveCompanyValidations
+                .Handle(saveCompanyEvent);
+
 
             List<Models.Entities.Companies> companies;
             companies = await _companiesRepository

@@ -131,7 +131,7 @@ namespace Mahzan.Dapper.V1.Repositories.Company.CreateCompany
                         rfc= companyDto.RFC,
                         curp= companyDto.CURP,
                         comercial_name= companyDto.CommercialName,
-                        business_name= companyDto.BusinesslName,
+                        business_name= companyDto.BusinessName,
                         email = companyDto.Email,
                         active = true,
                         member_id = companyDto.MemberId,

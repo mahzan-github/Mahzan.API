@@ -1,16 +1,12 @@
-﻿
-using Mahzan.API.Services.Dependencies.EventsHandlers.Company;
+﻿using Mahzan.API.Services.Dependencies.EventsHandlers.Company;
 using Mahzan.API.Services.Dependencies.EventsHandlers.Users;
 using Mahzan.API.Services.Dependencies.EventsServices.Email;
 using Mahzan.API.Services.Dependencies.Repositories.Members;
 using Mahzan.API.Services.Dependencies.Repositories.Users;
 using Mahzan.API.Services.Dependencies.Rules.Users;
+using Mahzan.API.Services.Dependencies.Validations.Company;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Mahzan.API.Services.Dependencies
 {
@@ -74,6 +70,12 @@ namespace Mahzan.API.Services.Dependencies
         {
             //Email
             EmailSernderDependency.Configure(services);
+        }
+
+        private static void ConfigureValidations(
+            IServiceCollection services) 
+        {
+            SaveCompanyValidationsDependency.Configure(services);
         }
 
     }

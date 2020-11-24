@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Mahzan.Dapper.DTO.Users.SignUp;
 using Mahzan.Dapper.Rules.Users.SignUp;
+using Mahzan.Models.Enums.MembersLicense;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -25,6 +26,8 @@ namespace Mahzan.Dapper.Repositories.Users.SignUp
         {
             Guid userId;
 
+            Guid memberId;
+
             //Ejecuta reglas
             await _signUpRules
                 .HandleRules(signUpDto);
@@ -36,10 +39,13 @@ namespace Mahzan.Dapper.Repositories.Users.SignUp
                 userId = await InsertUser(signUpDto);
 
                 //Inserta Member
-                await InsertMember(userId, signUpDto);
+                memberId = await InsertMember(userId, signUpDto);
 
                 //Inserta User Role
                 await InsertUserRole(userId);
+
+                //Inserta Members License
+                await InsertIntoMembersRoles(memberId);
 
                 transaction.Commit();
             }
@@ -107,9 +113,9 @@ namespace Mahzan.Dapper.Repositories.Users.SignUp
             return userId;
         }
 
-        private async Task InsertMember(Guid userId, SignUpDto signUpDto)
+        private async Task<Guid> InsertMember(Guid userId, SignUpDto signUpDto)
         {
-
+            Guid memberId = Guid.Empty;
 
             StringBuilder insertMember = new StringBuilder();
             insertMember.Append("Insert into members");
@@ -126,20 +132,21 @@ namespace Mahzan.Dapper.Repositories.Users.SignUp
             insertMember.Append("@phone,");
             insertMember.Append("@user_id");
             insertMember.Append(") ");
+            insertMember.Append("returning member_id ");
 
-
-
-            await Connection
+            memberId = await Connection
                 .ExecuteScalarAsync<Guid>(
                     insertMember.ToString(),
                     new
                     {
                         member_id = Guid.NewGuid(),
                         name = signUpDto.Name,
-                        phone = signUpDto.Password,
+                        phone = signUpDto.Phone,
                         user_id = userId
                     }
                 );
+
+            return memberId;
         }
 
         private async Task InsertUserRole(Guid userId)
@@ -163,6 +170,45 @@ namespace Mahzan.Dapper.Repositories.Users.SignUp
                     {
                         user_id = userId,
                         role_id = new Guid("fb4b765a-7fb9-4293-a548-924f6fc6dfb2")
+                    }
+                );
+        }
+
+        private async Task InsertIntoMembersRoles(
+            Guid memberId) 
+        {
+            string sql = @"
+                insert into members_license
+                (
+                member_license_id,
+                license_type,
+                created_at,
+                start_license_at,
+                end_license_at,
+                member_id
+                )
+                values
+                (
+                @member_license_id,
+                @license_type,
+                @created_at,
+                @start_license_at,
+                @end_license_at,
+                @member_id
+                )
+                returning member_license_id;
+            ";
+
+            await Connection
+                .ExecuteScalarAsync<Guid>(
+                    sql,
+                    new {
+                        member_license_id = Guid.NewGuid(),
+                        license_type = LicenseTypeEnum.TRIAL_LICENSE.ToString(),
+                        created_at = DateTimeOffset.Now,
+                        start_license_at = DateTimeOffset.Now,
+                        end_license_at = DateTimeOffset.Now.AddDays(30),
+                        member_id = memberId
                     }
                 );
         }

@@ -29,8 +29,24 @@ create table if not exists members
     "name"                    varchar(50)     NOT NULL,
     phone                     varchar(18)     NOT NULL,
     user_id                   uuid            NOT NULL,
+    member__pattern_id        uuid            NULL,
     PRIMARY KEY (member_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+/*  Table Name:     Licencia de Miembros
+    Description:    Contiene la información de los miembros de la aplaición
+*/
+create table if not exists members_license
+(
+    member_license_id         uuid            NOT NULL,
+    license_type              varchar(50)     NOT NULL,
+    created_at                timestamp       NULL,
+    start_license_at          timestamp       NULL,
+    end_license_at            timestamp       NULL,
+    member_id                 uuid            NOT NULL,
+    PRIMARY KEY (member_license_id),
+    FOREIGN KEY (member_id) REFERENCES members(member_id)
 );
 
 /*  Table Name:     Roles
@@ -56,6 +72,19 @@ create table if not exists user_role
     FOREIGN KEY (role_id) REFERENCES roles(role_id)
 );
 
+/*  Table Name:     Company Adress
+    Description:    Contiene la dirección de una compañia
+*/
+create table if not exists tax_regime_codes
+(
+    tax_regime_code_id      uuid            NOT NULL,
+    code                    varchar(3)      NOT NULL,
+    description             varchar(250)    NOT NULL,
+    moral_person            boolean         NULL,
+    physical_person         boolean         NULL,
+    PRIMARY KEY (tax_regime_code_id)
+);
+
 /*  Table Name:     Companies
     Description:    Contiene las compañias de un usuario
 */
@@ -72,25 +101,13 @@ create table if not exists companies
     tax_regime_code_id      uuid            NULL, -- Codigo de Regimen Fiscal
     office_phone            varchar(18)     NULL,
     mobile_phone            varchar(18)     NULL,
-    additional_information  varchar(500)    NULL
+    additional_information  varchar(500)    NULL,
 
     PRIMARY KEY (company_id),
-    FOREIGN KEY (member_id) REFERENCES members(member_id)
+    FOREIGN KEY (member_id) REFERENCES members(member_id),
     FOREIGN KEY (tax_regime_code_id) REFERENCES tax_regime_codes(tax_regime_code_id)
 );
 
-/*  Table Name:     Company Adress
-    Description:    Contiene la dirección de una compañia
-*/
-create table if not exists tax_regime_codes
-(
-    tax_regime_code_id      uuid            NOT NULL,
-    code                    varchar(3)      NOT NULL,
-    description             varchar(250)    NOT NULL,
-    moral_person            boolean         NULL
-    physical_person         boolean         NULL
-    PRIMARY KEY (tax_regime_code_id)
-);
 
 /*  Table Name:     Company Adress
     Description:    Contiene la dirección de una compañia
@@ -109,6 +126,30 @@ create table if not exists companies_addresses
     FOREIGN KEY (company_id) REFERENCES companies(company_id)
 );
 
-/*  Table Name:     Postal Codes
+/*  Table Name:     Postal Codes (Sepomex)
     Description:    Contiene los códigos postales
 */
+create table if not exists postal_codes
+(
+    postal_code_id          uuid            NOT NULL,
+
+    PRIMARY KEY (postal_code_id)
+);
+
+
+/*  Table Name:     Events
+    Description:    Contiene los códigos postales
+*/
+create table if not exists events_log
+(
+    event_log_id            uuid            NOT NULL,
+    controller              varchar(25)     NOT NULL,
+    "action"                varchar(25)     NOT NULL,
+    old_value               json            NULL,
+    new_value               json            NULL,
+    event_at                timestamp       NOT NULL,
+    user_id                 uuid            NOT NULL,
+    user_name               varchar(50)     NOT NULL,
+    PRIMARY KEY (event_log_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);

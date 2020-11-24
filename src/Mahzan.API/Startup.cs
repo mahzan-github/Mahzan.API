@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Mahzan.API.Exceptions;
 using Mahzan.API.Services;
+using Mahzan.API.Services.Jwt;
 using Mahzan.Business.EventsServices.Email;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,20 +36,23 @@ namespace Mahzan.API
             //Servicios Dependencies
             services
                 .ConfigureServices(
-                    _configuration.GetConnectionString("Mahzan")
+                    _configuration
                 );
 
             //Handle Errors
             services.AddMvc(options => { options.Filters.Add(typeof(UnhandledException)); })
                     .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-                    .ConfigureApiBehaviorOptions(options => {
+                    .ConfigureApiBehaviorOptions(options =>
+                    {
                         options.InvalidModelStateResponseFactory = InvalidModelStateHandler.Handler;
                     });
+
 
             //Email 
             services.Configure<EmailSettings>(
                 _configuration.GetSection("EmailSettings")
                 );
+
 
         }
 
@@ -79,6 +83,8 @@ namespace Mahzan.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

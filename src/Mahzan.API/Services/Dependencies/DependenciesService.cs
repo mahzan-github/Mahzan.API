@@ -1,6 +1,8 @@
 ﻿
+using Mahzan.API.Services.Dependencies.EventsHandlers.Company;
 using Mahzan.API.Services.Dependencies.EventsHandlers.Users;
 using Mahzan.API.Services.Dependencies.EventsServices.Email;
+using Mahzan.API.Services.Dependencies.Repositories.Members;
 using Mahzan.API.Services.Dependencies.Repositories.Users;
 using Mahzan.API.Services.Dependencies.Rules.Users;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,6 +41,10 @@ namespace Mahzan.API.Services.Dependencies
             //Users
             SignUpRepositoryDependency.Configure(services, connectionString);
             LogInRepositoryDependency.Configure(services, connectionString);
+            ConfirmEmailRepositoryDependency.Configure(services, connectionString);
+
+            //Members
+            MembersRepositoryDependency.Configure(services, connectionString);
         }
 
         private static void ConfigureRules(
@@ -57,6 +63,9 @@ namespace Mahzan.API.Services.Dependencies
             //Users
             SignUpEventHandlerDependency.Configure(services);
             LoginEventHandlerDependency.Configure(services);
+
+            //Company
+            SaveCompanyEventHandlerDependency.Configure(services);
         }
 
         private static void ConfigureEventsServices(

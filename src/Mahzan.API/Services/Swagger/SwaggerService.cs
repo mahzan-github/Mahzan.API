@@ -31,6 +31,28 @@ namespace Mahzan.API.Services.Swagger
                     TermsOfService = new Uri("https://example.com/terms"),
                 });
 
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please insert JWT with Bearer into field",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                   {
+                     new OpenApiSecurityScheme
+                     {
+                       Reference = new OpenApiReference
+                       {
+                         Type = ReferenceType.SecurityScheme,
+                         Id = "Bearer"
+                       }
+                      },
+                      new string[] { }
+                   }
+                });
+
                 // Apply the filters
                 options.OperationFilter<RemoveVersionFromParameter>();
                 options.DocumentFilter<ReplaceVersionWithExactValueInPath>();

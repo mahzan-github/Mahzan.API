@@ -11,6 +11,8 @@ namespace Mahzan.Business.V1.Validations.Company.SaveCompany
 {
     public class SaveCompanyValidations : ISaveCompanyValidations
     {
+
+
         public async Task Handle(SaveCompanyEvent saveCompanyEvent)
         {
             //Valida RFC

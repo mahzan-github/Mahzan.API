@@ -6,10 +6,14 @@
 
   <ItemGroup>
     <None Remove="Scripts\Data\V2020.11.03-Roles.sql" />
+    <None Remove="Scripts\Data\V2021.01.01-Tax-Regime-Codes.sql" />
     <None Remove="Scripts\Migration\V2020.10.20-DataBaseCreation.sql" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Scripts\Data\V2021.01.01-Tax-Regime-Codes.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Scripts\Data\V2020.11.03-Roles.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>

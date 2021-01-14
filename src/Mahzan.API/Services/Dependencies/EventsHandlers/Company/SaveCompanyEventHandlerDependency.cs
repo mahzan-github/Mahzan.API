@@ -1,4 +1,5 @@
 ﻿using Mahzan.Business.V1.EventsHandlers.Company.SaveCompany;
+using Mahzan.Business.V1.Validations.Company.SaveCompany;
 using Mahzan.Dapper.V1.Repositories._Base.Companies;
 using Mahzan.Dapper.V1.Repositories.Company.CreateCompany;
 using Mahzan.Dapper.V1.Repositories.Company.UpdateCompany;
@@ -20,7 +21,8 @@ namespace Mahzan.API.Services.Dependencies.EventsHandlers.Company
                 x => new SaveCompanyEventHandler(
                     x.GetService<ICompaniesRepository>(),
                     x.GetService<ICreateCompanyRepository>(),
-                    x.GetService<IUpdateCompanyRepository>()
+                    x.GetService<IUpdateCompanyRepository>(),
+                    x.GetService<ISaveCompanyValidations>()
                     )
                 );
         }

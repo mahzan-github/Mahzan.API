@@ -2,6 +2,7 @@
 using Mahzan.API.Services.Dependencies.EventsHandlers.Users;
 using Mahzan.API.Services.Dependencies.EventsServices.Email;
 using Mahzan.API.Services.Dependencies.Repositories.Members;
+using Mahzan.API.Services.Dependencies.Repositories.TaxRegimeCodes;
 using Mahzan.API.Services.Dependencies.Repositories.Users;
 using Mahzan.API.Services.Dependencies.Rules.Users;
 using Mahzan.API.Services.Dependencies.Validations.Company;
@@ -41,6 +42,9 @@ namespace Mahzan.API.Services.Dependencies
 
             //Members
             MembersRepositoryDependency.Configure(services, connectionString);
+
+            //Tax Regime Codes
+            GetTaxRegimeCodesRepositoryDependency.Configure(services, connectionString);
         }
 
         private static void ConfigureRules(

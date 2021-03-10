@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Npgsql;
 
 namespace Mahzan.API
 {
@@ -32,6 +33,8 @@ namespace Mahzan.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            
+            services.AddScoped(_ => new NpgsqlConnection(_configuration.GetConnectionString("Mahzan")));
 
             //Servicios Dependencies
             services

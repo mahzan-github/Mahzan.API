@@ -11,14 +11,10 @@ namespace Mahzan.API.Services.Dependencies.Repositories.Members
     public class MembersRepositoryDependency
     {
         public static void Configure(
-            IServiceCollection services,
-            string connectionString)
+            IServiceCollection services)
         {
             services
-                .AddScoped<IMembersRepository>(
-                x => new MembersRepository(
-                    new NpgsqlConnection(connectionString)
-                    ));
+                .AddScoped<IMembersRepository,MembersRepository>();
         }
     }
 }

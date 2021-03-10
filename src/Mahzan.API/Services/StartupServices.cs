@@ -24,10 +24,7 @@ namespace Mahzan.API.Services
             SwaggerService.AddSwagger(services);
 
             //Dependencies
-            DependenciesService.AddDependencies(
-                services,
-                configuration.GetConnectionString("Mahzan")
-                );
+            DependenciesService.AddDependencies(services);
 
             //Jwt
             JwtServices.AddJwt(

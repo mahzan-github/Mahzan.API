@@ -8,6 +8,9 @@ using Mahzan.API.Services.Dependencies.Rules.Users;
 using Mahzan.API.Services.Dependencies.Validations.Company;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
+using Mahzan.API.Services.Dependencies.CommandsHandlers.Company;
+using Mahzan.API.Services.Dependencies.Repositories.Company;
+using Mahzan.Business.V1.CommandHandlers.Company;
 
 namespace Mahzan.API.Services.Dependencies
 {
@@ -15,36 +18,35 @@ namespace Mahzan.API.Services.Dependencies
     public static class DependenciesService
     {
         public static void AddDependencies(
-            IServiceCollection services,
-            string connectionString)
+            IServiceCollection services)
         {
-            //Rules
-            ConfigureRules(services, connectionString);
 
             //Repositories
-            ConfigureRepositories(services, connectionString);
-
-            //Events Handlers
-            ConfigureEventsHandlers(services, connectionString);
+            ConfigureRepositories(services);
+            
+            //Commands Handlers
+            ConfigureCommandHandlers(services);
 
             //Events Services
-            ConfigureEventsServices(services, connectionString);
+            ConfigureEventsServices(services);
         }
 
         private static void ConfigureRepositories(
-            IServiceCollection services,
-            string connectionString)
+            IServiceCollection services)
         {
-            //Users
-            SignUpRepositoryDependency.Configure(services, connectionString);
-            LogInRepositoryDependency.Configure(services, connectionString);
-            ConfirmEmailRepositoryDependency.Configure(services, connectionString);
-
+            // //Users
+            // SignUpRepositoryDependency.Configure(services, connectionString);
+            // LogInRepositoryDependency.Configure(services, connectionString);
+            // ConfirmEmailRepositoryDependency.Configure(services, connectionString);
+            //
             //Members
-            MembersRepositoryDependency.Configure(services, connectionString);
-
-            //Tax Regime Codes
-            GetTaxRegimeCodesRepositoryDependency.Configure(services, connectionString);
+            //MembersRepositoryDependency.Configure(services);
+            //
+            // //Tax Regime Codes
+            // GetTaxRegimeCodesRepositoryDependency.Configure(services, connectionString);
+            
+            //Company
+            CreateCompanyRepositoryDependency.Configure(services);
         }
 
         private static void ConfigureRules(
@@ -69,17 +71,18 @@ namespace Mahzan.API.Services.Dependencies
         }
 
         private static void ConfigureEventsServices(
-            IServiceCollection services,
-            string connectionString)
+            IServiceCollection services)
         {
             //Email
             EmailSernderDependency.Configure(services);
         }
 
-        private static void ConfigureValidations(
-            IServiceCollection services) 
+
+
+        private static void ConfigureCommandHandlers(
+            IServiceCollection services)
         {
-            SaveCompanyValidationsDependency.Configure(services);
+            CreateCompanyCommandHandlerDependency.Configure(services);
         }
 
     }

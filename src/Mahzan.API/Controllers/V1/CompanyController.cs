@@ -13,71 +13,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Mahzan.API.Application.Requests.Company;
+using Mahzan.Business.V1.CommandHandlers.Company;
+using Mahzan.Business.V1.Commands.Company;
+using Mahzan.Persistance.V1.ViewModel.Company;
 
 namespace Mahzan.API.Controllers.V1
 {
     [ApiVersion("1")]
     [Route("v{version:apiVersion}")]
     [ApiController]
-    public class CompanyController : BaseController
+    public class CompanyController : ControllerBase
     {
 
-        private readonly ISaveCompanyEventHandler _saveCompanyEventHandler;
+        private readonly ICreateCompanyCommandHandler _createCompanyCommandHandler;
 
         public CompanyController(
-            IMembersRepository membersRepository, 
-            ISaveCompanyEventHandler saveCompanyEventHandler)
-        : base(membersRepository)
+            ICreateCompanyCommandHandler createCompanyCommandHandler)
         {
-            _saveCompanyEventHandler = saveCompanyEventHandler;
+            _createCompanyCommandHandler = createCompanyCommandHandler;
         }
-
-        [Authorize(AuthenticationSchemes = "Bearer")]
-        [HttpPost("company:save")]
-        [ProducesResponseType(typeof(CompanyCreateViewModel), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Post(
-            SaveCompanyCommand command)
+        
+        //[Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpPost("company:create")]
+        [ProducesResponseType(typeof(CreateCompanyViewModel), (int) HttpStatusCode.OK)]
+        public async Task<IActionResult> Create(
+            CreateCompanyRequest request)
         {
-            try
+           var response= await _createCompanyCommandHandler.Handle(new CreateCompanyCommand
             {
-                Guid companyId = await _saveCompanyEventHandler
-                    .Handler(new SaveCompanyEvent
-                    {
-                        CompanyEvent = new CompanyEvent {
-                            RFC = command.CompanyCommand.RFC,
-                            CURP = command.CompanyCommand.CURP,
-                            CommercialName = command.CompanyCommand.CommercialName,
-                            BusinessName = command.CompanyCommand.BusinessName,
-                            Email = command.CompanyCommand.Email,
-                            TaxRegimeCodeId = command.CompanyCommand.TaxRegimeCodeId,
-                            OfficePhone = command.CompanyCommand.OfficePhone,
-                            MobilePhone = command.CompanyCommand.MobilePhone,
-                            AdditionalInformation = command.CompanyCommand.AdditionalInformation
-                        },
-                        CompanyAdressesEvent = command
-                                               .CompanyAdressesCommand
-                                               .Select(c => new CompanyAdressEvent {
-                                                    AdressType = c.AdressType,
-                                                    Street = c.Street,
-                                                    ExteriorNumber = c.ExteriorNumber,
-                                                    InternalNumber = c.InternalNumber,
-                                                    PostalCode = c.PostalCode,
-                                                    CompanyId = c.CompanyId
-                                               })
-                                               .ToList(),
-                        MemberId = MemberId
-                    });
-            }
-            catch (ArgumentException ex)
-            {
-                throw new ServiceArgumentException(ex);
-            }
-            catch (InvalidOperationException ex)
-            {
-                throw new ServiceInvalidOperationException(ex);
-            }
 
-            return Ok();
+            });
+            
+            return Ok(response);
         }
     }
 }

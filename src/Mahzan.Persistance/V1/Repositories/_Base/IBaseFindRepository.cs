@@ -9,7 +9,7 @@ namespace Mahzan.Persistance.V1.Repositories._Base
     /// </summary>
     /// <typeparam name="TEntity">Type for business entities</typeparam>
     /// <typeparam name="TFilter">Type for filter</typeparam>
-    public interface IFindRepository<TEntity, in TFilter>
+    public interface IBaseFindRepository<TEntity, in TFilter>
     {
         /// <summary>
         /// </summary>

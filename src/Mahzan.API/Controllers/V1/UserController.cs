@@ -1,23 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Mahzan.API.Application.Commands.UsersController;
 using Mahzan.API.Application.Requests.User;
 using Mahzan.API.Exceptions;
-using Mahzan.API.ViewModels.UsersController;
-using Mahzan.Business.Events.Users.LogIn;
-using Mahzan.Business.Events.Users.SignUp;
-using Mahzan.Business.EventsHandlers.Users.LogIn;
 using Mahzan.Business.V1.CommandHandlers.User;
+using Mahzan.Business.V1.CommandHandlers.User.LogIn;
 using Mahzan.Business.V1.Commands.User;
 using Mahzan.Persistance.V1.Dto.User;
-using Mahzan.Persistance.V1.Filters.User;
 using Mahzan.Persistance.V1.Repositories.User.ConfirmEmail;
 using Mahzan.Persistance.V1.ViewModel.User;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -31,16 +23,19 @@ namespace Mahzan.API.Controllers.V1
         private readonly ISignUpCommandHandler _signUpCommandHandler;
 
         private readonly IConfirmEmailRepository _confirmEmailRepository;
+
+        private readonly ILogInCommandHandler _logInCommandHandler;
         
         //private readonly IConfirmEmailRepository _confirmEmailRepository;
 
-        //private readonly ILoginEventHandler _loginEventHandler;
+
 
         private readonly ILogger<UserController> _logger;
 
         public UserController(
             ISignUpCommandHandler signUpCommandHandler,
             IConfirmEmailRepository confirmEmailRepository,
+            ILogInCommandHandler logInCommandHandler,
             ILogger<UserController> logger)
         {
             //Events Handlers
@@ -52,6 +47,7 @@ namespace Mahzan.API.Controllers.V1
             //Logger
             _confirmEmailRepository = confirmEmailRepository;
             _signUpCommandHandler = signUpCommandHandler;
+            _logInCommandHandler = logInCommandHandler;
             _logger = logger;
         }
 
@@ -116,62 +112,33 @@ namespace Mahzan.API.Controllers.V1
 
             return Ok($"Se ha confirmado correctamente el usuario {confirmEmailDto.UserName}.");
         }
-
-
-        // [AllowAnonymous]
-        // [HttpGet("user:confirm-email")]
-        // [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
-        // public async Task<IActionResult> ConfirmEmail(string userId, string tokenConfrimEmail)
-        // {
-        //     try
-        //     {
-        //         await _confirmEmailRepository
-        //             .HandleRepository(new Guid(userId), new Guid(tokenConfrimEmail));
-        //     }
-        //     catch (ServiceInvalidOperationException ex)
-        //     {
-        //
-        //         throw new ServiceInvalidOperationException(ex);
-        //     }
-        //
-        //     return Ok("Se ha confirmado correctamente tu Email.");
-        // }
-        //
-        // [AllowAnonymous]
-        // [HttpGet("user:sign-in")]
-        // [ProducesResponseType(typeof(LogInViewModel), (int)HttpStatusCode.OK)]
-        //
-        // public async Task<IActionResult> SignIn(string userName, string passowrd)
-        // {
-        //
-        //     LogInViewModel logInViewModel = null;
-        //     try
-        //     {
-        //         string token = await _loginEventHandler
-        //             .HandleEvent(new LoginEvent
-        //             {
-        //                 UserName = userName,
-        //                 Password = passowrd
-        //             });
-        //
-        //         if (token!=null)
-        //         {
-        //             logInViewModel = new LogInViewModel
-        //             {
-        //                 Token = token
-        //             };
-        //         }
-        //     }
-        //     catch (ArgumentException ex)
-        //     {
-        //         throw new ServiceArgumentException(ex);
-        //     }
-        //     catch (InvalidOperationException ex)
-        //     {
-        //         throw new ServiceInvalidOperationException(ex);
-        //     }
-        //
-        //     return Ok(logInViewModel);
-        // }
+        
+        [AllowAnonymous]
+        [HttpGet("user:sign-in")]
+        [ProducesResponseType(typeof(LogInViewModel), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> SignIn(string userName, string passowrd)
+        {
+        
+            LogInViewModel logInViewModel = null;
+            try
+            {
+                logInViewModel = await _logInCommandHandler
+                    .Handle(new LogInCommad
+                    {
+                        UserName = userName,
+                        Password = passowrd
+                    });
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ServiceArgumentException(ex);
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new ServiceInvalidOperationException(ex);
+            }
+        
+            return Ok(logInViewModel);
+        }
     }
 }

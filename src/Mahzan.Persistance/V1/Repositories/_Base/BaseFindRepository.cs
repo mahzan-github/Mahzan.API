@@ -14,7 +14,7 @@ namespace Mahzan.Persistance.V1.Repositories._Base
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
     /// <typeparam name="TFilter"></typeparam>
-    public abstract class BaseFindRepository<TEntity, TFilter> : IFindRepository<TEntity, TFilter>
+    public abstract class BaseFindRepository<TEntity, TFilter> : IBaseFindRepository<TEntity, TFilter>
     {
         private readonly Func<TEntity, string> _toPageToken;
 

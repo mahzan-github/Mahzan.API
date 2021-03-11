@@ -116,7 +116,7 @@ namespace Mahzan.Persistance.V1.Repositories.User.ConfirmEmail
                 Guid.TryParse(userIdOnFilter, out Guid userId);
                 result = true;
             }
-            catch (Exception e)
+            catch 
             {
                 result = false;
             }
@@ -131,7 +131,7 @@ namespace Mahzan.Persistance.V1.Repositories.User.ConfirmEmail
                 Guid.TryParse(tokenConfirmEmail, out Guid userId);
                 result = true;
             }
-            catch (Exception e)
+            catch
             {
                 result = false;
             }

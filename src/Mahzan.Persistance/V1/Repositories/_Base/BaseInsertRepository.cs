@@ -49,9 +49,9 @@ namespace Mahzan.Persistance.V1.Repositories._Base
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        protected virtual Task HandlePrevalidations(TEntity dto)
+        protected virtual void HandlePrevalidations(TEntity dto)
         {
-            return Task.CompletedTask;
+
         }
     }
 }

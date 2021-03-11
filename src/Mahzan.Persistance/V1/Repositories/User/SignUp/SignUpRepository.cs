@@ -39,7 +39,7 @@ namespace Mahzan.Persistance.V1.Repositories.User.SignUp
             };
         }
 
-        protected override async Task HandlePrevalidations(SignUpDto dto)
+        protected override void HandlePrevalidations(SignUpDto dto)
         {
             if (UserNameExist(dto.UserName))
             {
@@ -55,8 +55,24 @@ namespace Mahzan.Persistance.V1.Repositories.User.SignUp
         private async Task<Guid> InsertInUser(SignUpDto dto)
         {
             string sql = @"
-                insert into users(user_id,user_name,password,active,confirm_email,token_confirm_email,email) 
-                values (@user_id,@user_name,@password,@active,@confirm_email,@token_confirm_email,@email) 
+                insert into users(
+                    user_id,
+                    user_name,
+                    password,
+                    active,
+                    confirm_email,
+                    token_confirm_email,
+                    email,
+                    created_at) 
+                values (
+                    @user_id,
+                    @user_name,
+                    @password,
+                    @active,
+                    @confirm_email,
+                    @token_confirm_email,
+                    @email,
+                    @created_at) 
                 returning user_id;";
             
             Guid userId = await Connection
@@ -70,7 +86,8 @@ namespace Mahzan.Persistance.V1.Repositories.User.SignUp
                         active = true,
                         confirm_email = false,
                         token_confirm_email = Guid.NewGuid(),
-                        email = dto.Email
+                        email = dto.Email,
+                        created_at = DateTimeOffset.Now
                     }
                 );
 

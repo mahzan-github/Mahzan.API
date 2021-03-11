@@ -1,14 +1,15 @@
-﻿using Mahzan.API.Application.Filters.TaxRegimeCodesController;
-using Mahzan.API.ViewModels.TaxRegimeCodesController;
-using Mahzan.Dapper.V1.Repositories.TaxRegimeCodes.GetTaxRegimeCodes;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Mahzan.API.Application.Requests.TaxRegimeCodes;
+using Mahzan.API.Application.Responses.TaxRegimeCodes;
+using Mahzan.Persistance.V1.Filters.TaxRegimeCodes;
+using Mahzan.Persistance.V1.Repositories.TaxRegimeCodes.GetTaxRegimeCodes;
+using Mahzan.Persistance.V1.ViewModel.TaxRegimeCodes;
+
 
 namespace Mahzan.API.Controllers.V1
 {
@@ -18,7 +19,6 @@ namespace Mahzan.API.Controllers.V1
     public class TaxRegimeCodesController : ControllerBase
     {
         private readonly IGetTaxRegimeCodesRepository _getTaxRegimeCodesRepository;
-
         public TaxRegimeCodesController(
             IGetTaxRegimeCodesRepository getTaxRegimeCodesRepository)
         {
@@ -27,35 +27,29 @@ namespace Mahzan.API.Controllers.V1
 
         [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpGet("companies:get")]
-        [ProducesResponseType(typeof(List<GetTaxRegimeCodesViewModel>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Get([FromQuery] GetTaxRegimeCodesFilter filter) 
+        [ProducesResponseType(typeof(GetTaxRegimeCodesResponse), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> Get([FromQuery] GetTaxRegimeCodesRequest request)
         {
-            List<Models.Entities.TaxRegimeCodes> taxRegimeCodes;
-            List<GetTaxRegimeCodesViewModel> getTaxRegimeCodesViewModel;
-            try
-            {
-                taxRegimeCodes = await _getTaxRegimeCodesRepository
-                    .GetTaxRegimeCodes(new Dapper.V1.Filters.TaxRegimeCodes.GetTaxRegimeCodes.GetTaxRegimeCodesFilter
-                    {
-                        Code = filter.Code
-                    });
+            GetTaxRegimeCodesResponse getTaxRegimeCodesResponse = null;
 
-                getTaxRegimeCodesViewModel = taxRegimeCodes
-                    .Select(t => new GetTaxRegimeCodesViewModel
+            var result= await _getTaxRegimeCodesRepository
+                .FindAll(new GetTaxRegimeCodesFilter
+                {
+                    Code = request.Code
+                });
+
+            getTaxRegimeCodesResponse = new GetTaxRegimeCodesResponse
+            {
+                ListTaxRegimeCodesResponse = result
+                    .Select(t => new TaxRegimeCodesResponse()
                     {
-                        TaxRegimeCodeId = t.TaxRegimeCodeId,
                         Code = t.Code,
                         Description = t.Description
-                    }).ToList();
-            }
-            catch (Exception)
-            {
+                    })
+                    .ToList()
+            };
 
-                throw;
-            }
-
-
-            return Ok(getTaxRegimeCodesViewModel);
+            return Ok(getTaxRegimeCodesResponse);
         }
     }
 }

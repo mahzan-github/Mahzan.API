@@ -88,8 +88,6 @@ namespace Mahzan.Persistance.V1.Repositories._Base
         public async Task<TEntity> FindSingle(TFilter filter)
         {
             //TODO: Optimize so we don't need to enumerate to List
-            HandlePrevalidations(filter);
-            
             var result = await FindInternal(filter, new PagingOptions { PageSize = 2 });
 
             return result.Count switch
@@ -106,16 +104,5 @@ namespace Mahzan.Persistance.V1.Repositories._Base
         /// <param name="pagingOptions"></param>
         /// <returns></returns>
         protected abstract Task<IReadOnlyList<TEntity>> FindInternal(TFilter filter, PagingOptions pagingOptions);
-        
-        /// <summary>
-        ///     Validaciones que no requieren conexión a base de datos.
-        ///     Debe lanzar excepciones para indicar un error en dichas validaciones.
-        /// </summary>
-        /// <param name="command"></param>
-        /// <returns></returns>
-        protected virtual void HandlePrevalidations(TFilter filter)
-        {
-
-        }
     }
 }

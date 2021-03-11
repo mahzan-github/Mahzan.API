@@ -5,6 +5,7 @@ using Mahzan.Business.V1.CommandHandlers.Company;
 using Mahzan.Business.V1.CommandHandlers.User;
 using Mahzan.Business.V1.CommandHandlers.User.LogIn;
 using Mahzan.Persistance.V1.Repositories.Company;
+using Mahzan.Persistance.V1.Repositories.TaxRegimeCodes.GetTaxRegimeCodes;
 using Mahzan.Persistance.V1.Repositories.User.ConfirmEmail;
 using Mahzan.Persistance.V1.Repositories.User.LogIn;
 using Mahzan.Persistance.V1.Repositories.User.SignUp;
@@ -31,6 +32,9 @@ namespace Mahzan.API.Services.Dependencies
         private static void ConfigureRepositories(
             IServiceCollection services)
         {
+            //TaxRegimeCodes
+            services.AddScoped<IGetTaxRegimeCodesRepository, GetTaxRegimeCodesRepository>();
+            
             //Company
             services.AddScoped<ICreateCompanyRepository, CreateCompanyRepository>();
             
@@ -39,17 +43,8 @@ namespace Mahzan.API.Services.Dependencies
             services.AddScoped<IConfirmEmailRepository, ConfirmEmailRepository>();
             services.AddScoped<ILogInRepository, LogInRepository>();
             
-            
-            // //Users
-            // SignUpRepositoryDependency.Configure(services, connectionString);
-            // LogInRepositoryDependency.Configure(services, connectionString);
-            // ConfirmEmailRepositoryDependency.Configure(services, connectionString);
-            //
             //Members
             //MembersRepositoryDependency.Configure(services);
-            //
-            // //Tax Regime Codes
-            // GetTaxRegimeCodesRepositoryDependency.Configure(services, connectionString);
             
         }
 

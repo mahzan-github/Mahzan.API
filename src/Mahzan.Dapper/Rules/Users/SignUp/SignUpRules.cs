@@ -1,7 +1,5 @@
 ﻿using Dapper;
 using Mahzan.Dapper.DTO.Users.SignUp;
-using Mahzan.Dapper.Exceptions.Users.SignUp;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -22,9 +20,9 @@ namespace Mahzan.Dapper.Rules.Users.SignUp
             //Valida que el usuario no exista
             if (await UserNameExist(signUpDto.UserName))
             {
-                throw new SignUpArgumentException(
-                    $"El usuario {signUpDto.UserName} ya existe."
-                    );
+                // throw new SignUpArgumentException(
+                //     $"El usuario {signUpDto.UserName} ya existe."
+                //     );
             }
 
             //Valida que el usuario no se encuentre inactivo

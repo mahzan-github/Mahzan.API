@@ -1,5 +1,4 @@
 ﻿using Mahzan.Dapper.V1.DTO.Company.CreateCompany;
-using Mahzan.Dapper.V1.Exceptions.Company.CreateCompany;
 using Mahzan.Dapper.V1.Rules._Base.Companies;
 using Mahzan.Dapper.V1.Rules.Filters.Companies;
 using System;
@@ -13,6 +12,7 @@ using Mahzan.Dapper.V1.Repositories._Base.Companies;
 using Mahzan.Dapper.V1.Filters._Base.Companies;
 using Mahzan.Dapper.V1.DTO.EventsLog.CreateEventLog;
 using Mahzan.Models.Enums.EventsLog;
+using Mahzan.Persistance.V1.Exeptions.Company.CreateCompany;
 using Newtonsoft.Json;
 
 namespace Mahzan.Dapper.V1.Repositories.Company.CreateCompany

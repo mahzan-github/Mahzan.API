@@ -32,6 +32,8 @@ namespace Mahzan.Persistance.V1.Repositories._Base
         public Task<TEntity> Insert(TEntity entity)
         {
             //TODO: Implement transaction handling code or connection check?
+            HandlePrevalidations(entity);
+            
             return InsertInternal(entity);
         }
 
@@ -40,5 +42,16 @@ namespace Mahzan.Persistance.V1.Repositories._Base
         /// <param name="dto"></param>
         /// <returns></returns>
         protected abstract Task<TEntity> InsertInternal(TEntity dto);
+        
+        /// <summary>
+        ///     Validaciones que no requieren conexión a base de datos.
+        ///     Debe lanzar excepciones para indicar un error en dichas validaciones.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        protected virtual Task HandlePrevalidations(TEntity dto)
+        {
+            return Task.CompletedTask;
+        }
     }
 }

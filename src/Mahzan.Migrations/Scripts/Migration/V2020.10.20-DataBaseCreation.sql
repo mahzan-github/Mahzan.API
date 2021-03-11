@@ -5,7 +5,7 @@
 /*  Table Name:     Users
     Description:    Contiene los usuarios de la aplicación
 */
-create table if not exists users
+create table if not exists "users"
 (
     user_id                 uuid            NOT NULL,
     user_name               varchar(50)     NOT NULL,
@@ -23,7 +23,7 @@ create table if not exists users
 /*  Table Name:     Members
     Description:    Contiene la información de los miembros de la aplaición
 */
-create table if not exists members
+create table if not exists "members"
 (
     member_id                 uuid            NOT NULL,
     "name"                    varchar(50)     NOT NULL,
@@ -37,7 +37,7 @@ create table if not exists members
 /*  Table Name:     Licencia de Miembros
     Description:    Contiene la información de los miembros de la aplaición
 */
-create table if not exists members_license
+create table if not exists "members_license"
 (
     member_license_id         uuid            NOT NULL,
     license_type              varchar(50)     NOT NULL,
@@ -45,14 +45,14 @@ create table if not exists members_license
     start_license_at          timestamp       NULL,
     end_license_at            timestamp       NULL,
     member_id                 uuid            NOT NULL,
-    PRIMARY KEY (member_license_id),
-    FOREIGN KEY (member_id) REFERENCES members(member_id)
+    PRIMARY KEY (member_license_id)
+    --FOREIGN KEY (member_id) REFERENCES members(member_id)
 );
 
 /*  Table Name:     Roles
     Description:    Contiene los roles de los uaurios de la aplicación
 */
-create table if not exists roles
+create table if not exists "roles"
 (
     role_id                 uuid            NOT NULL,
     "name"                  varchar(50)     NOT NULL,
@@ -62,7 +62,7 @@ create table if not exists roles
 /*  Table Name:     User Role
     Description:    Contiene los roles asignado a un usuario.
 */
-create table if not exists user_role
+create table if not exists "user_role"
 (
     user_id                 uuid            NOT NULL,
     role_id                 uuid            NOT NULL,
@@ -75,7 +75,7 @@ create table if not exists user_role
 /*  Table Name:     Company Adress
     Description:    Contiene la dirección de una compañia
 */
-create table if not exists tax_regime_codes
+create table if not exists "tax_regime_codes"
 (
     tax_regime_code_id      uuid            NOT NULL,
     code                    varchar(3)      NOT NULL,
@@ -88,7 +88,7 @@ create table if not exists tax_regime_codes
 /*  Table Name:     Companies
     Description:    Contiene las compañias de un usuario
 */
-create table if not exists companies
+create table if not exists "companies"
 (
     company_id              uuid            NOT NULL,
     rfc                     varchar(13)     NOT NULL,
@@ -112,7 +112,7 @@ create table if not exists companies
 /*  Table Name:     Company Adress
     Description:    Contiene la dirección de una compañia
 */
-create table if not exists companies_addresses
+create table if not exists "companies_addresses"
 (
     company_adress_id       uuid            NOT NULL,
     adress_type             varchar(25)     NOT NULL, --FISCAL_LOCATION,EXPEDITION_PLACE
@@ -129,7 +129,7 @@ create table if not exists companies_addresses
 /*  Table Name:     Postal Codes (Sepomex)
     Description:    Contiene los códigos postales
 */
-create table if not exists postal_codes
+create table if not exists "postal_codes"
 (
     postal_code_id          uuid            NOT NULL,
 
@@ -140,7 +140,7 @@ create table if not exists postal_codes
 /*  Table Name:     Events
     Description:    Contiene los códigos postales
 */
-create table if not exists events_log
+create table if not exists "events_log"
 (
     event_log_id            uuid            NOT NULL,
     controller              varchar(25)     NOT NULL,

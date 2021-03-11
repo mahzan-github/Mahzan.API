@@ -1,10 +1,10 @@
-﻿using Mahzan.API.Services.Dependencies.EventsHandlers.Users;
-using Mahzan.API.Services.Dependencies.EventsServices.Email;
-using Mahzan.API.Services.Dependencies.Rules.Users;
+﻿using Mahzan.API.Services.Dependencies.EventsServices.Email;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
-using Mahzan.API.Services.Dependencies.CommandsHandlers.Company;
-using Mahzan.API.Services.Dependencies.Repositories.Company;
+using Mahzan.Business.V1.CommandHandlers.Company;
+using Mahzan.Business.V1.CommandHandlers.User;
+using Mahzan.Persistance.V1.Repositories.Company;
+using Mahzan.Persistance.V1.Repositories.User;
 
 namespace Mahzan.API.Services.Dependencies
 {
@@ -14,12 +14,12 @@ namespace Mahzan.API.Services.Dependencies
         public static void AddDependencies(
             IServiceCollection services)
         {
-
+            
             //Repositories
             ConfigureRepositories(services);
             
             //Commands Handlers
-            ConfigureCommandHandlers(services);
+            CmmandsHandlers(services);
 
             //Events Services
             ConfigureEventsServices(services);
@@ -28,6 +28,9 @@ namespace Mahzan.API.Services.Dependencies
         private static void ConfigureRepositories(
             IServiceCollection services)
         {
+            services.AddScoped<ICreateCompanyRepository, CreateCompanyRepository>();
+            services.AddScoped<ISignUpRepository, SignUpRepository>();
+            
             // //Users
             // SignUpRepositoryDependency.Configure(services, connectionString);
             // LogInRepositoryDependency.Configure(services, connectionString);
@@ -39,44 +42,24 @@ namespace Mahzan.API.Services.Dependencies
             // //Tax Regime Codes
             // GetTaxRegimeCodesRepositoryDependency.Configure(services, connectionString);
             
-            //Company
-            CreateCompanyRepositoryDependency.Configure(services);
         }
 
-        private static void ConfigureRules(
-            IServiceCollection services,
-            string connectionString)
+        private static void CmmandsHandlers(
+            IServiceCollection services)
         {
-            //Users
-            SignUpRulesDependency.Configure(services, connectionString);
-            LogInRulesDependency.Configure(services, connectionString);
-        }
-
-        private static void ConfigureEventsHandlers(
-            IServiceCollection services,
-            string connectionString)
-        {
-            //Users
-            SignUpEventHandlerDependency.Configure(services);
-            LoginEventHandlerDependency.Configure(services);
+            //User
+            services.AddScoped<ISignUpCommandHandler, SignUpCommandHandler>();  
             
+            //Company
+            services.AddScoped<ICreateCompanyCommandHandler, CreateCompanyCommandHandler>();  
         }
-
+        
         private static void ConfigureEventsServices(
             IServiceCollection services)
         {
             //Email
             EmailSernderDependency.Configure(services);
         }
-
-
-
-        private static void ConfigureCommandHandlers(
-            IServiceCollection services)
-        {
-            CreateCompanyCommandHandlerDependency.Configure(services);
-        }
-
     }
 
 

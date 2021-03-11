@@ -1,119 +1,83 @@
-﻿using Dapper;
-using Mahzan.Dapper.DTO.Users.SignUp;
-using Mahzan.Dapper.Rules.Users.SignUp;
-using Mahzan.Models.Enums.MembersLicense;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dapper;
+using Mahzan.Models.Entities;
+using Mahzan.Models.Enums.MembersLicense;
+using Mahzan.Persistance.V1.Dto.User;
+using Mahzan.Persistance.V1.Repositories._Base;
+using Mahzan.Persistance.V1.Exeptions.User;
+using Mahzan.Persistance.V1.Exeptions.User.SignUp;
+using Npgsql;
 
-namespace Mahzan.Dapper.Repositories.Users.SignUp
+namespace Mahzan.Persistance.V1.Repositories.User
 {
-    public class SignUpRepository : DataConnection, ISignUpRepository
+    public class SignUpRepository:BaseRepository<SignUpDto>,
+    ISignUpRepository
     {
-        private readonly ISignUpRules _signUpRules;
-
         public SignUpRepository(
-            IDbConnection dbConnection,
-            ISignUpRules signUpRules) : base(dbConnection)
+            NpgsqlConnection connection) : base(connection)
         {
-            _signUpRules = signUpRules;
         }
 
-        public async Task<Models.Entities.Users> HandleRepository(SignUpDto signUpDto)
+        protected override async Task<SignUpDto> InsertInternal(SignUpDto dto)
         {
-            Guid userId;
 
-            Guid memberId;
+            Guid userId = await InsertInUser(dto);
 
-            //Ejecuta reglas
-            await _signUpRules
-                .HandleRules(signUpDto);
+            Guid memberId = await InsertInMember(userId, dto);
 
-            using (var transaction = Connection.BeginTransaction())
+            await InsertUserRole(userId);
+
+            await InsertIntoMembersRoles(userId);
+
+            return dto with
             {
-
-                //Inserta User
-                userId = await InsertUser(signUpDto);
-
-                //Inserta Member
-                memberId = await InsertMember(userId, signUpDto);
-
-                //Inserta User Role
-                await InsertUserRole(userId);
-
-                //Inserta Members License
-                await InsertIntoMembersRoles(memberId);
-
-                transaction.Commit();
-            }
-
-            StringBuilder sqlUser = new StringBuilder();
-            sqlUser.Append("Select * from Users ");
-            sqlUser.Append("Where user_id = @user_id ");
-
-            IEnumerable<Models.Entities.Users> user;
-            user = await Connection
-                .QueryAsync<Models.Entities.Users>(
-                    sqlUser.ToString(),
-                    new
-                    {
-                        user_id = userId
-                    }
-                );
-
-            return user.FirstOrDefault();
+                UserId = userId
+            };
         }
 
-        private async Task<Guid> InsertUser(SignUpDto signUpDto)
+        protected override async Task HandlePrevalidations(SignUpDto dto)
         {
+            if (UserNameExist(dto.UserName))
+            {
+                throw new SignUpArgumentException(
+                    $"El usuario {dto.UserName} ya existe."
+                );  
+            }
+            
+        }
 
+        #region :: Create New User Steps ::
 
-            StringBuilder insertUser = new StringBuilder();
-            insertUser.Append("Insert into users ");
-            insertUser.Append("(");
-            insertUser.Append("user_id,");
-            insertUser.Append("user_name,");
-            insertUser.Append("password,");
-            insertUser.Append("active,");
-            insertUser.Append("confirm_email,");
-            insertUser.Append("token_confirm_email,");
-            insertUser.Append("email");
-            insertUser.Append(") ");
-            insertUser.Append("Values ");
-            insertUser.Append("(");
-            insertUser.Append("@user_id,");
-            insertUser.Append("@user_name,");
-            insertUser.Append("@password,");
-            insertUser.Append("@active,");
-            insertUser.Append("@confirm_email,");
-            insertUser.Append("@token_confirm_email,");
-            insertUser.Append("@email");
-            insertUser.Append(") ");
-            insertUser.Append("RETURNING user_id; ");
-
-
+        private async Task<Guid> InsertInUser(SignUpDto dto)
+        {
+            string sql = @"
+                insert into users(user_id,user_name,password,active,confirm_email,token_confirm_email,email) 
+                values (@user_id,@user_name,@password,@active,@confirm_email,@token_confirm_email,@email) 
+                returning user_id;";
+            
             Guid userId = await Connection
                 .ExecuteScalarAsync<Guid>(
-                    insertUser.ToString(),
+                    sql,
                     new
                     {
                         user_id = Guid.NewGuid(),
-                        user_name = signUpDto.UserName,
-                        password = signUpDto.Password,
+                        user_name = dto.UserName,
+                        password = dto.Password,
                         active = true,
                         confirm_email = false,
                         token_confirm_email = Guid.NewGuid(),
-                        email = signUpDto.Email
+                        email = dto.Email
                     }
                 );
 
             return userId;
         }
 
-        private async Task<Guid> InsertMember(Guid userId, SignUpDto signUpDto)
+        private async Task<Guid> InsertInMember(Guid userId, SignUpDto dto)
         {
             Guid memberId = Guid.Empty;
 
@@ -140,19 +104,19 @@ namespace Mahzan.Dapper.Repositories.Users.SignUp
                     new
                     {
                         member_id = Guid.NewGuid(),
-                        name = signUpDto.Name,
-                        phone = signUpDto.Phone,
+                        name = dto.Name,
+                        phone = dto.Phone,
                         user_id = userId
                     }
                 );
 
-            return memberId;
+            return memberId;    
         }
 
         private async Task InsertUserRole(Guid userId)
         {
             StringBuilder sqlUser = new StringBuilder();
-            sqlUser.Append("Insert into user_role ");
+            sqlUser.Append("insert into user_role ");
             sqlUser.Append("(");
             sqlUser.Append("user_id,");
             sqlUser.Append("role_id");
@@ -173,7 +137,7 @@ namespace Mahzan.Dapper.Repositories.Users.SignUp
                     }
                 );
         }
-
+        
         private async Task InsertIntoMembersRoles(
             Guid memberId) 
         {
@@ -212,5 +176,36 @@ namespace Mahzan.Dapper.Repositories.Users.SignUp
                     }
                 );
         }
+
+        #endregion
+
+        #region :: Prevalidations ::
+
+        private bool UserNameExist(string userName)
+        {
+            
+            bool result = false;
+
+            string sql = @"select * from users where user_name = @user_name ";
+            
+            IEnumerable<Users> users;
+            users = Connection
+                .Query<Users>(
+                    sql,
+                    new
+                    {
+                        user_name = userName
+                    }
+                );
+
+            if (users.Any())
+            {
+                result = true;
+            }
+
+            return result;
+        }
+
+        #endregion
     }
 }

@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Mahzan.Models\Mahzan.Models.csproj" />
+    <ProjectReference Include="..\Mahzan.Persistance\Mahzan.Persistance.csproj" />
   </ItemGroup>
 
 </Project>

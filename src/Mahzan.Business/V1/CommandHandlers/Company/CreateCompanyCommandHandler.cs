@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Mahzan.Business.V1.Commands.Company;
@@ -30,10 +31,30 @@ namespace Mahzan.Business.V1.CommandHandlers.Company
             var companyInserted  =await _createCompanyRepository
                 .Insert(new CreateCompanyDto
                 {
-                    CompanyDto = new CompanyDto
+                    CompanyDto = new CompanyDto()
                     {
-                        RFC = command.CompanyCommand.RFC
-                    }
+                        RFC = command.CompanyCommand.RFC,
+                        CURP = command.CompanyCommand.CURP,
+                        CommercialName = command.CompanyCommand.CommercialName,
+                        BusinessName = command.CompanyCommand.BusinessName,
+                        Email  = command.CompanyCommand.Email,
+                        TaxRegimeCodeId = command.CompanyCommand.TaxRegimeCodeId,
+                        OfficePhone = command.CompanyCommand.OfficePhone,
+                        MobilePhone = command.CompanyCommand.MobilePhone,
+                        AdditionalInformation = command.CompanyCommand.AdditionalInformation,
+                        MemberId = command.CompanyCommand.MemberId
+                    },
+                    CompanyAdressesDto = command
+                        .CompanyAdressesCommand
+                        .Select(a => new CompanyAdressDto
+                        {
+                            AdressType = a.AdressType,
+                            Street = a.Street,
+                            ExteriorNumber = a.ExteriorNumber,
+                            InternalNumber = a.InternalNumber,
+                            PostalCode = a.PostalCode
+                        })
+                        .ToList()
                 });
 
             return CreateCompanyViewModel.From(companyInserted);

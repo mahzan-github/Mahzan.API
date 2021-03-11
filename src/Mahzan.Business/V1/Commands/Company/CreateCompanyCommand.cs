@@ -38,20 +38,24 @@ namespace Mahzan.Business.V1.Commands.Company
         public string MobilePhone { get; set; }
 
         public string AdditionalInformation { get; set; }
+        
+        public Guid MemberId { get; set; }
     }
 
     public class CompanyAdressCommand
     {
+        [Required]
         public AddressTypeEnum AdressType { get; set; }
-
+        [Required]
         public string Street { get; set; }
-
+        [Required]
         public string ExteriorNumber { get; set; }
 
         public string InternalNumber { get; set; }
 
+        [Required]
+        [MaxLength(4)]
         public string PostalCode { get; set; }
-
-        public Guid CompanyId { get; set; }
+        
     }
 }

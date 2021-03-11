@@ -29,7 +29,12 @@ namespace Mahzan.Persistance.V1.Repositories.User.LogIn
 
             await UpdateUserLastLoginAt(user);
 
-            return dto;
+            Members member = await FindMember(user);
+
+            return dto with
+            {
+                MemberId = member.MemberId
+            };
         }
 
         protected override void HandlePrevalidations(LogInDto dto)
@@ -159,6 +164,32 @@ namespace Mahzan.Persistance.V1.Repositories.User.LogIn
                         user_id = user.UserId
                     }
                 );
+        }
+
+        private async Task<Members> FindMember(Users user)
+        {
+            string sql = @"
+                select  * 
+                from    members 
+                where   user_id=@user_id
+            ";
+
+            IEnumerable<Members> members = await Connection
+                .QueryAsync<Members>(
+                    sql,
+                    new {
+                        user_id = user.UserId
+                    }
+                );
+
+            if (!members.Any())
+            {
+                throw new LoginArgumentException(
+                    $"No fue posible encontrar el usuario como miembro de mahzan."
+                );
+            }
+
+            return members.FirstOrDefault();   
         }
 
         #endregion

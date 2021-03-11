@@ -50,8 +50,7 @@ namespace Mahzan.API.Application.Requests.Company
 
         public string InternalNumber { get; set; }
 
+        [MaxLength(5)]
         public string PostalCode { get; set; }
-
-        public Guid CompanyId { get; set; }
     }
 }

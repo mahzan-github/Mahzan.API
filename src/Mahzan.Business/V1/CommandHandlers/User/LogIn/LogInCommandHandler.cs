@@ -3,7 +3,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Mahzan.Business.Events.Users.LogIn;
 using Mahzan.Business.V1.Commands.User;
 using Mahzan.Persistance.V1.Dto.User;
 using Mahzan.Persistance.V1.Filters.User;
@@ -37,7 +36,7 @@ namespace Mahzan.Business.V1.CommandHandlers.User.LogIn
 
         protected override async Task<LogInViewModel> HandleTransaction(LogInCommad command)
         {
-            await _logInRepository
+            LogInDto logInDto =await _logInRepository
                 .Update(new LogInDto
                 {
                     UserName = command.UserName,
@@ -46,7 +45,7 @@ namespace Mahzan.Business.V1.CommandHandlers.User.LogIn
 
             LogInViewModel logInViewModel = new LogInViewModel();
             
-            logInViewModel.Token = await GetToken(command);
+            logInViewModel.Token = await GetToken(logInDto);
 
             return logInViewModel;
         }
@@ -64,14 +63,14 @@ namespace Mahzan.Business.V1.CommandHandlers.User.LogIn
 
         #region :: Jwt Token Generator ::
         
-        private async Task<string> GetToken(LogInCommad command)
+        private async Task<string> GetToken(LogInDto logInDto)
         {
 
             string result = string.Empty;
 
             Claim[] claims = new[] {
-                new Claim(JwtRegisteredClaimNames.Sub, command.UserName),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new Claim(JwtRegisteredClaimNames.Sub, logInDto.UserName),
+                new Claim(JwtRegisteredClaimNames.Jti, logInDto.MemberId.ToString())
             };
 
             SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));

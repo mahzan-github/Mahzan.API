@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Threading.Tasks;
 using Mahzan.API.Application.Requests.Company;
@@ -31,8 +34,28 @@ namespace Mahzan.API.Controllers.V1
             {
                 CompanyCommand = new CompanyCommand
                 {
-                    RFC = request.CompanyRequest.RFC
-                }
+                    RFC = request.CompanyRequest.RFC,
+                    CURP = request.CompanyRequest.CURP,
+                    CommercialName = request.CompanyRequest.CommercialName,
+                    BusinessName = request.CompanyRequest.BusinessName,
+                    Email  = request.CompanyRequest.Email,
+                    TaxRegimeCodeId = request.CompanyRequest.TaxRegimeCodeId,
+                    OfficePhone = request.CompanyRequest.OfficePhone,
+                    MobilePhone = request.CompanyRequest.MobilePhone,
+                    AdditionalInformation = request.CompanyRequest.AdditionalInformation,
+                    MemberId = new Guid(HttpContext.User.Claims.ToList()[1].Value)
+                },
+                CompanyAdressesCommand = request
+                    .CompanyAdressesRequest
+                    .Select(a => new CompanyAdressCommand
+                    {
+                        AdressType = a.AdressType,
+                        Street = a.Street,
+                        ExteriorNumber = a.ExteriorNumber,
+                        InternalNumber = a.InternalNumber,
+                        PostalCode = a.PostalCode
+                    })
+                    .ToList()
             });
             
             return Ok(response);

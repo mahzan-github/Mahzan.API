@@ -118,8 +118,8 @@ create table if not exists "companies_addresses"
     adress_type             varchar(25)     NOT NULL, --FISCAL_LOCATION,EXPEDITION_PLACE
     street                  varchar(50)     NOT NULL,
     exterior_number         varchar(25)     NOT NULL,
-    internal_number         varchar(25)     NOT NULL,
-    postal_code             uuid            NOT NULL,
+    internal_number         varchar(25)     NULL,
+    postal_code             varchar(5)      NOT NULL,
     company_id              uuid            NOT NULL,
 
     PRIMARY KEY (company_adress_id),

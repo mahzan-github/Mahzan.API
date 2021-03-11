@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Mahzan.Persistance.V1.Dto.Company;
@@ -19,6 +21,35 @@ namespace Mahzan.Persistance.V1.Repositories.Company
 
         protected override async Task<CreateCompanyDto> InsertInternal(
             CreateCompanyDto dto)
+        {
+            //Compañia
+            Guid companyId = await InsertInCompanies(dto.CompanyDto);
+            
+            //Direcciones
+            if (dto.CompanyAdressesDto.Any())
+            {
+                await InsetInCompaniesAddresses(
+                    companyId,
+                    dto.CompanyAdressesDto
+                );
+            }
+
+            return dto with
+            {
+               CompanyDto = dto.CompanyDto with
+               {
+                   CompanyId = companyId
+               }
+            };
+        }
+
+        protected override void HandlePrevalidations(CreateCompanyDto dto)
+        {
+            base.HandlePrevalidations(dto);
+        }
+
+        #region :: Insert Company Steps ::
+        private async Task<Guid> InsertInCompanies(CompanyDto companyDto)
         {
             Guid companyId = Guid.Empty;
 
@@ -61,27 +92,75 @@ namespace Mahzan.Persistance.V1.Repositories.Company
                     sql,
                     new {
                         company_id = Guid.NewGuid(),
-                        rfc= dto.CompanyDto.RFC,
-                        curp= dto.CompanyDto.CURP,
-                        comercial_name= dto.CompanyDto.CommercialName,
-                        business_name= dto.CompanyDto.BusinessName,
-                        email = dto.CompanyDto.Email,
+                        rfc= companyDto.RFC,
+                        curp= companyDto.CURP,
+                        comercial_name= companyDto.CommercialName,
+                        business_name= companyDto.BusinessName,
+                        email = companyDto.Email,
                         active = true,
-                        member_id = dto.CompanyDto.MemberId,
-                        tax_regime_code_id = dto.CompanyDto.TaxRegimeCodeId,
-                        office_phone = dto.CompanyDto.OfficePhone,
-                        mobile_phone = dto.CompanyDto.MobilePhone,
-                        additional_information = dto.CompanyDto.AdditionalInformation
+                        member_id =companyDto.MemberId,
+                        tax_regime_code_id = companyDto.TaxRegimeCodeId,
+                        office_phone = companyDto.OfficePhone,
+                        mobile_phone = companyDto.MobilePhone,
+                        additional_information = companyDto.AdditionalInformation
                     }
                 );
 
-            return dto with
-            {
-               CompanyDto = dto.CompanyDto with
-               {
-                   CompanyId = companyId
-               }
-            };
+            return companyId;
         }
+
+        private async Task InsetInCompaniesAddresses(
+            Guid companyId,
+            List<CompanyAdressDto> companyAdressesDto)
+        {
+            foreach (var companyAdresseDto in companyAdressesDto)
+            {
+                string sql = @"
+                    insert into companies_addresses
+                    (
+                        company_adress_id,
+                        adress_type,
+                        street,
+                        exterior_number,
+                        internal_number,
+                        postal_code,
+                        company_id
+                    )
+                    values 
+                    (
+                        @company_adress_id,
+                        @adress_type,
+                        @street,
+                        @exterior_number,
+                        @internal_number,
+                        @postal_code,
+                        @company_id
+                    )
+                ";
+
+                await Connection
+                    .ExecuteAsync(
+                        sql,
+                        new
+                        {
+                            company_adress_id = Guid.NewGuid(),
+                            adress_type = companyAdresseDto.AdressType.ToString(),
+                            street = companyAdresseDto.Street,
+                            exterior_number = companyAdresseDto.ExteriorNumber,
+                            internal_number = companyAdresseDto.InternalNumber,
+                            postal_code = companyAdresseDto.PostalCode,
+                            company_id = companyId
+                        });
+
+            }
+        }
+        
+        #endregion
+
+        #region :: Prevalidations ::
+
+        //TODO:Validar que el TaxRegimeCodeId existe
+
+        #endregion
     }
 }

@@ -1,16 +1,4 @@
-﻿using Mahzan.API.Application.Commands.CompanyController;
-using Mahzan.API.Controllers._Base;
-using Mahzan.API.Exceptions;
-using Mahzan.API.ViewModels.CompanyController;
-using Mahzan.Business.V1.Events.Company;
-using Mahzan.Business.V1.EventsHandlers.Company.SaveCompany;
-using Mahzan.Dapper.V1.Repositories._Base.Members;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Threading.Tasks;
 using Mahzan.API.Application.Requests.Company;
@@ -25,9 +13,7 @@ namespace Mahzan.API.Controllers.V1
     [ApiController]
     public class CompanyController : ControllerBase
     {
-
         private readonly ICreateCompanyCommandHandler _createCompanyCommandHandler;
-
         public CompanyController(
             ICreateCompanyCommandHandler createCompanyCommandHandler)
         {
@@ -40,9 +26,13 @@ namespace Mahzan.API.Controllers.V1
         public async Task<IActionResult> Create(
             CreateCompanyRequest request)
         {
-           var response= await _createCompanyCommandHandler.Handle(new CreateCompanyCommand
+           var response= await _createCompanyCommandHandler
+               .Handle(new CreateCompanyCommand
             {
-
+                CompanyCommand = new CompanyCommand
+                {
+                    RFC = request.CompanyRequest.RFC
+                }
             });
             
             return Ok(response);

@@ -6,6 +6,7 @@ using Mahzan.API.Exceptions;
 using Mahzan.API.Services;
 using Mahzan.API.Services.Jwt;
 using Mahzan.Business.EventsServices.Email;
+using Mahzan.Persistance.Dapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -33,6 +34,8 @@ namespace Mahzan.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            
+            DapperSetup.Initialize();
             
             services.AddScoped(_ => new NpgsqlConnection(_configuration.GetConnectionString("Mahzan")));
 

@@ -9,9 +9,9 @@ namespace Mahzan.Persistance.V1.Repositories._Base
     /// <summary>
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public abstract class BaseRepository<TEntity> : IRepository<TEntity>
+    public abstract class BaseInsertRepository<TEntity> : IBaseInsertRepository<TEntity>
     {
-        internal BaseRepository(NpgsqlConnection connection)
+        internal BaseInsertRepository(NpgsqlConnection connection)
         {
             if (!DapperSetup.Initialized)
             {

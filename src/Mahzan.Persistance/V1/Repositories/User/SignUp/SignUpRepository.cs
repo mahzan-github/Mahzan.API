@@ -12,9 +12,9 @@ using Mahzan.Persistance.V1.Exeptions.User;
 using Mahzan.Persistance.V1.Exeptions.User.SignUp;
 using Npgsql;
 
-namespace Mahzan.Persistance.V1.Repositories.User
+namespace Mahzan.Persistance.V1.Repositories.User.SignUp
 {
-    public class SignUpRepository:BaseRepository<SignUpDto>,
+    public class SignUpRepository:BaseInsertRepository<SignUpDto>,
     ISignUpRepository
     {
         public SignUpRepository(

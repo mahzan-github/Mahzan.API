@@ -4,7 +4,8 @@ using System.Diagnostics.CodeAnalysis;
 using Mahzan.Business.V1.CommandHandlers.Company;
 using Mahzan.Business.V1.CommandHandlers.User;
 using Mahzan.Persistance.V1.Repositories.Company;
-using Mahzan.Persistance.V1.Repositories.User;
+using Mahzan.Persistance.V1.Repositories.User.ConfirmEmail;
+using Mahzan.Persistance.V1.Repositories.User.SignUp;
 
 namespace Mahzan.API.Services.Dependencies
 {
@@ -28,8 +29,13 @@ namespace Mahzan.API.Services.Dependencies
         private static void ConfigureRepositories(
             IServiceCollection services)
         {
+            //Company
             services.AddScoped<ICreateCompanyRepository, CreateCompanyRepository>();
+            
+            //User
             services.AddScoped<ISignUpRepository, SignUpRepository>();
+            services.AddScoped<IConfirmEmailRepository, ConfirmEmailRepository>();
+            
             
             // //Users
             // SignUpRepositoryDependency.Configure(services, connectionString);

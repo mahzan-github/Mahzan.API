@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Mahzan.Business.EventsServices.Email;
 using Mahzan.Business.V1.Commands.User;
 using Mahzan.Persistance.V1.Dto.User;
-using Mahzan.Persistance.V1.Repositories.User;
+using Mahzan.Persistance.V1.Repositories.User.SignUp;
 using Mahzan.Persistance.V1.ViewModel.User;
 using Microsoft.Extensions.Logging;
 using Npgsql;
@@ -10,7 +10,7 @@ using Npgsql;
 namespace Mahzan.Business.V1.CommandHandlers.User
 {
     public class SignUpCommandHandler
-    :CommandHandlerBase<CreateNewUserCommand,CreateNewUserViewModel>, ISignUpCommandHandler
+    :CommandHandlerBase<CreateNewUserCommand,SignUpViewModel>, ISignUpCommandHandler
     {
         private readonly ISignUpRepository _signUpRepository;
         
@@ -20,14 +20,14 @@ namespace Mahzan.Business.V1.CommandHandlers.User
             NpgsqlConnection connection,
             IEmailSender emailSender, 
             ISignUpRepository signUpRepository,
-            ILogger<CommandHandlerBase<CreateNewUserCommand,CreateNewUserViewModel>> logger) 
+            ILogger<CommandHandlerBase<CreateNewUserCommand,SignUpViewModel>> logger) 
             : base(connection, logger)
         {
             _emailSender = emailSender;
             _signUpRepository = signUpRepository;
         }
 
-        protected override async Task<CreateNewUserViewModel> HandleTransaction(
+        protected override async Task<SignUpViewModel> HandleTransaction(
             CreateNewUserCommand command)
         {
             var userInserted = await _signUpRepository
@@ -42,7 +42,7 @@ namespace Mahzan.Business.V1.CommandHandlers.User
 
             //await SendEmail(userInserted);
             
-            return CreateNewUserViewModel.From(userInserted);
+            return SignUpViewModel.From(userInserted);
         }
         
         #region :: Private Methods ::

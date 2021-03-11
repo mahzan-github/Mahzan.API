@@ -7,7 +7,7 @@ using Npgsql;
 
 namespace Mahzan.Persistance.V1.Repositories.Company
 {
-    public class CreateCompanyRepository:BaseRepository<CreateCompanyDto>,
+    public class CreateCompanyRepository:BaseInsertRepository<CreateCompanyDto>,
         ICreateCompanyRepository
     {
         public CreateCompanyRepository(

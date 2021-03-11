@@ -12,7 +12,9 @@ using Mahzan.Business.Events.Users.SignUp;
 using Mahzan.Business.EventsHandlers.Users.LogIn;
 using Mahzan.Business.V1.CommandHandlers.User;
 using Mahzan.Business.V1.Commands.User;
-using Mahzan.Dapper.Repositories.Users.ConfirmEmail;
+using Mahzan.Persistance.V1.Dto.User;
+using Mahzan.Persistance.V1.Filters.User;
+using Mahzan.Persistance.V1.Repositories.User.ConfirmEmail;
 using Mahzan.Persistance.V1.ViewModel.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -27,6 +29,8 @@ namespace Mahzan.API.Controllers.V1
     public class UserController : ControllerBase
     {
         private readonly ISignUpCommandHandler _signUpCommandHandler;
+
+        private readonly IConfirmEmailRepository _confirmEmailRepository;
         
         //private readonly IConfirmEmailRepository _confirmEmailRepository;
 
@@ -36,6 +40,7 @@ namespace Mahzan.API.Controllers.V1
 
         public UserController(
             ISignUpCommandHandler signUpCommandHandler,
+            IConfirmEmailRepository confirmEmailRepository,
             ILogger<UserController> logger)
         {
             //Events Handlers
@@ -45,22 +50,23 @@ namespace Mahzan.API.Controllers.V1
             //_confirmEmailRepository = confirmEmailRepository;
 
             //Logger
-            _logger = logger;
+            _confirmEmailRepository = confirmEmailRepository;
             _signUpCommandHandler = signUpCommandHandler;
+            _logger = logger;
         }
 
         [AllowAnonymous]
         [HttpPost("user:sign-up")]
-        [ProducesResponseType(typeof(CreateNewUserViewModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(SignUpViewModel), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> SignUp(
             [FromBody] SignUpRequest request)
         {
-            CreateNewUserViewModel createNewUserViewModel = null;
+            SignUpViewModel signUpViewModel = null;
             try
             {
                 _logger.LogInformation($"Registro de Usuario {request.UserName}");
 
-                createNewUserViewModel = await _signUpCommandHandler
+                signUpViewModel = await _signUpCommandHandler
                     .Handle(new CreateNewUserCommand
                     {
                         Name = request.Name,
@@ -79,8 +85,38 @@ namespace Mahzan.API.Controllers.V1
                 throw new ServiceArgumentException(ex);
             }
 
-            return Ok(createNewUserViewModel);
+            return Ok(signUpViewModel);
         }
+
+        [AllowAnonymous]
+        [HttpGet("user:confirm-email")]
+        [ProducesResponseType(typeof(string), (int) HttpStatusCode.OK)]
+        public async Task<IActionResult> ConfirmEmail(string userId, string tokenConfrimEmail)
+        {
+            ConfirmEmailDto confirmEmailDto = null;
+            
+            try
+            {
+                confirmEmailDto = await _confirmEmailRepository
+                    .Update(new ConfirmEmailDto()
+                    {
+                        UserId = userId,
+                        TokenConfrimEmail = tokenConfrimEmail
+                    });
+
+            }
+            catch (InvalidOperationException e)
+            {
+                throw new ServiceInvalidOperationException(e);
+            }
+            catch (ArgumentException e)
+            {
+                throw new ServiceArgumentException(e);
+            }
+
+            return Ok($"Se ha confirmado correctamente el usuario {confirmEmailDto.UserName}.");
+        }
+
 
         // [AllowAnonymous]
         // [HttpGet("user:confirm-email")]

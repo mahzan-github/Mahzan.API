@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 
 namespace MAhzan.Persistance.V1.Repositories._Base
 {
-    public interface IRepository<TEntity>
+    public interface IBaseInsertRepository<TEntity>
     {
         /// <summary>
         /// </summary>

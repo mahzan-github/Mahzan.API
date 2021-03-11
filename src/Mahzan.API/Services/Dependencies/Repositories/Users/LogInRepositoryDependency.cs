@@ -1,5 +1,4 @@
-﻿using Mahzan.Dapper.Repositories.Users.ConfirmEmail;
-using Mahzan.Dapper.Repositories.Users.Login;
+﻿using Mahzan.Dapper.Repositories.Users.Login;
 using Mahzan.Dapper.Rules.Users.LogIn;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;

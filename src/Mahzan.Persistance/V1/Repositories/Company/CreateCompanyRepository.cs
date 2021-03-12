@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Mahzan.Persistance.V1.Dto.Company;
+using Mahzan.Persistance.V1.Exeptions.Company.CreateCompany;
 using Mahzan.Persistance.V1.Repositories._Base;
 using Npgsql;
 
@@ -45,7 +47,12 @@ namespace Mahzan.Persistance.V1.Repositories.Company
 
         protected override void HandlePrevalidations(CreateCompanyDto dto)
         {
-            base.HandlePrevalidations(dto);
+            if (!TaxRegimeCodeIdExist(dto.CompanyDto.TaxRegimeCodeId))
+            {
+                throw new CreateCompanyArgumentException(
+                    $"El TaxRegimeCodeId {dto.CompanyDto.TaxRegimeCodeId} no existe."
+                );
+            }
         }
 
         #region :: Insert Company Steps ::
@@ -158,9 +165,34 @@ namespace Mahzan.Persistance.V1.Repositories.Company
         #endregion
 
         #region :: Prevalidations ::
+        private bool TaxRegimeCodeIdExist(Guid taxRegimeCodeId)
+        {
+            bool result = false;
+            
+            string sql = @"
+                select * from tax_regime_codes
+                where tax_regime_code_id = @tax_regime_code_id
+            ";
 
-        //TODO:Validar que el TaxRegimeCodeId existe
+            IEnumerable<Models.Entities.TaxRegimeCodes> taxRegimeCodes;
+            taxRegimeCodes = Connection
+                .Query<Models.Entities.TaxRegimeCodes>
+                (
+                    sql,
+                    new
+                    {
+                        tax_regime_code_id = taxRegimeCodeId
+                    }
+                );
 
+            if (taxRegimeCodes.Any())
+            {
+                result = true;
+            }
+
+            return result;
+        }
+        
         #endregion
     }
 }

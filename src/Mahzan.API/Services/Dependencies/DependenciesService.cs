@@ -2,9 +2,12 @@
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
 using Mahzan.Business.V1.CommandHandlers.Company;
+using Mahzan.Business.V1.CommandHandlers.ProductCategories.CreateProductCategory;
 using Mahzan.Business.V1.CommandHandlers.User;
 using Mahzan.Business.V1.CommandHandlers.User.LogIn;
 using Mahzan.Persistance.V1.Repositories.Company;
+using Mahzan.Persistance.V1.Repositories.ProductCategories.CreateProductCategory;
+using Mahzan.Persistance.V1.Repositories.ProductDepartments.CreateProductDepartment;
 using Mahzan.Persistance.V1.Repositories.TaxRegimeCodes.GetTaxRegimeCodes;
 using Mahzan.Persistance.V1.Repositories.User.ConfirmEmail;
 using Mahzan.Persistance.V1.Repositories.User.LogIn;
@@ -43,9 +46,12 @@ namespace Mahzan.API.Services.Dependencies
             services.AddScoped<IConfirmEmailRepository, ConfirmEmailRepository>();
             services.AddScoped<ILogInRepository, LogInRepository>();
             
-            //Members
-            //MembersRepositoryDependency.Configure(services);
+            //Product Categories
+            services.AddScoped<ICreateProductCategoryRepository, CreateProductCategoryRepository>();
             
+            //Product Departments
+            services.AddScoped<ICreateProductDepartment, CreateProductDepartment>();
+
         }
 
         private static void CmmandsHandlers(
@@ -57,6 +63,9 @@ namespace Mahzan.API.Services.Dependencies
             
             //Company
             services.AddScoped<ICreateCompanyCommandHandler, CreateCompanyCommandHandler>();  
+            
+            //Product Categories
+            services.AddScoped<ICreateProductCategoryCommandHandler, CreateProductCategoryCommandHandler>(); 
         }
         
         private static void ConfigureEventsServices(

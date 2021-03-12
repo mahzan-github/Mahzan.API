@@ -153,3 +153,45 @@ create table if not exists "events_log"
     PRIMARY KEY (event_log_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
+
+/*  Table Name:     Bank Accounts
+    Description:    Contiene las cuentas bancarias de una compañia
+*/
+create table if not exists "bank_accounts"
+(
+    bank_account_id         uuid            NOT NULL,
+    account                 varchar(50)     NOT NULL, 
+    branch_office           varchar(50)     NOT NULL, -- Sucursal
+    clabe                   varchar(50)     NOT NULL,
+    bank                    varchar(50)     NOT NULL,
+    accounting_account      varchar(50)     NOT NULL,
+    company_id              uuid            NOT NULL,
+    PRIMARY KEY (bank_account_id),
+    FOREIGN KEY (company_id) REFERENCES companies(company_id)
+);
+
+/*  Table Name:     Product Categories
+    Description:    Contiene las categorias a las que se pueden relacionar los productos
+*/
+create table if not exists "product_catagories"
+(
+    product_catagory_id     uuid            NOT NULL,
+    code_category           varchar(25)     NULL,
+    description             varchar(50)     NOT NULL,
+    company_id              uuid            NOT NULL,
+    PRIMARY KEY (product_catagory_id),
+    FOREIGN KEY (company_id) REFERENCES companies(company_id)
+);
+
+/*  Table Name:     Product Departments
+    Description:    Contiene los departamentos a las que se pueden relacionar los productos
+*/
+create table if not exists "product_departments"
+(
+    product_department_id   uuid            NOT NULL,
+    code_department         varchar(25)     NULL,
+    "name"                  varchar(50)     NOT NULL,
+    company_id              uuid            NOT NULL,
+    PRIMARY KEY (product_department_id),
+    FOREIGN KEY (company_id) REFERENCES companies(company_id)
+);

@@ -30,7 +30,7 @@ namespace Mahzan.Persistance.V1.Repositories.ProductCategories.CreateProductCate
             };
         }
 
-        protected override async Task HandlePrevalidations(CreateProductCategoryDto dto)
+        protected override async void HandlePrevalidations(CreateProductCategoryDto dto)
         {
             if (CategoryDescriptionExist(dto.CompanyId,dto.Description))
             {

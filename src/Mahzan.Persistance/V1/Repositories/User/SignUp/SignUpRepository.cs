@@ -39,7 +39,7 @@ namespace Mahzan.Persistance.V1.Repositories.User.SignUp
             };
         }
 
-        protected override async Task HandlePrevalidations(SignUpDto dto)
+        protected override async void HandlePrevalidations(SignUpDto dto)
         {
             if (UserNameExist(dto.UserName))
             {

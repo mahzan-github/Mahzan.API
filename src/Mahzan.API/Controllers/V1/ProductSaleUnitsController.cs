@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using Mahzan.API.Application.Requests.ProductSaleUnits;
+using Mahzan.API.Exceptions;
 using Mahzan.Persistance.V1.Dto.ProductSaleUnits;
 using Mahzan.Persistance.V1.Repositories.ProductSaleUnits.CreateProductSaleUnit;
 using Mahzan.Persistance.V1.ViewModel.ProductSaleUnits;
@@ -39,10 +40,9 @@ namespace Mahzan.API.Controllers.V1
                         CompanyId = request.CompanyId
                     });
             }
-            catch (Exception e)
+            catch (ArgumentException ex)
             {
-                Console.WriteLine(e);
-                throw;
+                throw new ServiceArgumentException(ex);
             }
             return Ok(new CreateProductSaleUnitViewModel
             {

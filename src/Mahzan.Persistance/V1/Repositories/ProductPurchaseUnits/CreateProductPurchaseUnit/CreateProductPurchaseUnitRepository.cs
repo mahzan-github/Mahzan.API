@@ -29,7 +29,7 @@ namespace Mahzan.Persistance.V1.Repositories.ProductPurchaseUnits.CreateProductP
             };
         }
 
-        protected override async Task HandlePrevalidations(CreateProductPurchaseUnitDto dto)
+        protected override async void HandlePrevalidations(CreateProductPurchaseUnitDto dto)
         {
             if (await AbbreviationExist(dto.Abbreviation))
             {

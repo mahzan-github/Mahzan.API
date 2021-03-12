@@ -25,12 +25,17 @@ namespace Mahzan.Persistance.V1.Repositories.ProductSaleUnits.CreateProductSaleU
         protected override async Task<CreateProductSaleUnitDto> InsertInternal(
             CreateProductSaleUnitDto dto)
         {
-            throw new System.NotImplementedException();
+            Guid productSaleUnitId = await InsertInProductSaleUnits(dto);
+
+            return dto with
+            {
+                ProductSaleUnitId = productSaleUnitId
+            };
         }
 
-        protected override async Task HandlePrevalidations(CreateProductSaleUnitDto dto)
+        protected override async void HandlePrevalidations(CreateProductSaleUnitDto dto)
         {
-            if (await AbbreviationExist(dto.Abbreviation))
+            if (AbbreviationExist(dto.Abbreviation))
             {
                 throw new CreateProductSaleUnitArgumentException(
                     $"La abreviatura {dto.Abbreviation} ya existe."
@@ -40,7 +45,7 @@ namespace Mahzan.Persistance.V1.Repositories.ProductSaleUnits.CreateProductSaleU
 
         #region :: Prevalidations ::
 
-        private async Task<bool> AbbreviationExist(
+        private bool AbbreviationExist(
             string abbreviation)
         {
             bool result = false;
@@ -52,8 +57,8 @@ namespace Mahzan.Persistance.V1.Repositories.ProductSaleUnits.CreateProductSaleU
             ";
 
             IEnumerable<Models.Entities.ProductSaleUnits> productSaleUnits;
-            productSaleUnits = await Connection
-                .QueryAsync<Models.Entities.ProductSaleUnits>(
+            productSaleUnits = Connection
+                .Query<Models.Entities.ProductSaleUnits>(
                     sql,
                     new
                     {
@@ -70,43 +75,43 @@ namespace Mahzan.Persistance.V1.Repositories.ProductSaleUnits.CreateProductSaleU
 
         #endregion
 
-        #region :: Create Product Purchase Unit Steps ::
+        #region :: Create Product Sale Unit Steps ::
 
-        private async Task<Guid> InsertInProductPurchaseUnits(
-            CreateProductPurchaseUnitDto dto)
+        private async Task<Guid> InsertInProductSaleUnits(
+            CreateProductSaleUnitDto dto)
         {
-            Guid productPurchaseUnitId = Guid.Empty;
+            Guid productSaleUnitId = Guid.Empty;
             
             string sql = @"
-                insert into product_purchase_units 
+                insert into product_sale_units 
                     (
-                     product_purchase_unit_id,
+                     product_sale_unit_id,
                      abbreviation,
                      description,
                      company_id
                     ) 
                     values 
                     (
-                     @product_purchase_unit_id,
+                     @product_sale_unit_id,
                      @abbreviation,
                      @description,
                      @company_id         
                     ) 
-                returning product_purchase_unit_id;
+                returning product_sale_unit_id;
             ";
 
-            productPurchaseUnitId = await Connection
+            productSaleUnitId = await Connection
                 .ExecuteScalarAsync<Guid>(
                     sql,
                     new
                     {
-                        product_purchase_unit_id = Guid.NewGuid(),
+                        product_sale_unit_id = Guid.NewGuid(),
                         abbreviation = dto.Abbreviation,
                         description = dto.Description,
                         company_id = dto.CompanyId,
                     });
 
-            return productPurchaseUnitId;
+            return productSaleUnitId;
         }
 
         #endregion     

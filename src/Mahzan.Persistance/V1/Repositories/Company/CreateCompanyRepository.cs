@@ -45,7 +45,7 @@ namespace Mahzan.Persistance.V1.Repositories.Company
             };
         }
 
-        protected override async Task HandlePrevalidations(CreateCompanyDto dto)
+        protected override async void HandlePrevalidations(CreateCompanyDto dto)
         {
             if (!TaxRegimeCodeIdExist(dto.CompanyDto.TaxRegimeCodeId))
             {

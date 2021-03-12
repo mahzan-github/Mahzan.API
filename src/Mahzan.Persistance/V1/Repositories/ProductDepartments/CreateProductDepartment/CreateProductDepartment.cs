@@ -30,7 +30,7 @@ namespace Mahzan.Persistance.V1.Repositories.ProductDepartments.CreateProductDep
             };
         }
 
-        protected override void HandlePrevalidations(CreateProductDepartmentDto dto)
+        protected override async Task HandlePrevalidations(CreateProductDepartmentDto dto)
         {
             if (DepartmentNameExist(dto.CompanyId,dto.Name))
             {

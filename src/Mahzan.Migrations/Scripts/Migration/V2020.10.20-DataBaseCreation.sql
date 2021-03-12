@@ -195,3 +195,16 @@ create table if not exists "product_departments"
     PRIMARY KEY (product_department_id),
     FOREIGN KEY (company_id) REFERENCES companies(company_id)
 );
+
+/*  Table Name:     Product Purchase Units
+    Description:    Contiene las unidades de compra de los productos
+*/
+create table if not exists "product_purchase_units"
+(
+    product_purchase_unit_id    uuid            NOT NULL,
+    abbreviation                varchar(25)     NULL,
+    description                 varchar(50)     NOT NULL,
+    company_id                  uuid            NOT NULL,
+    PRIMARY KEY (product_purchase_unit_id),
+    FOREIGN KEY (company_id) REFERENCES companies(company_id)
+);

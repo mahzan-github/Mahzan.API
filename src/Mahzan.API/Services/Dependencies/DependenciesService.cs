@@ -9,6 +9,7 @@ using Mahzan.Persistance.V1.Repositories.Company;
 using Mahzan.Persistance.V1.Repositories.ProductCategories.CreateProductCategory;
 using Mahzan.Persistance.V1.Repositories.ProductDepartments.CreateProductDepartment;
 using Mahzan.Persistance.V1.Repositories.ProductPurchaseUnits.CreateProductPurchaseUnit;
+using Mahzan.Persistance.V1.Repositories.ProductSaleUnits.CreateProductSaleUnit;
 using Mahzan.Persistance.V1.Repositories.TaxRegimeCodes.GetTaxRegimeCodes;
 using Mahzan.Persistance.V1.Repositories.User.ConfirmEmail;
 using Mahzan.Persistance.V1.Repositories.User.LogIn;
@@ -56,7 +57,9 @@ namespace Mahzan.API.Services.Dependencies
             //Product Purchase Units
             services.AddScoped<ICreateProductPurchaseUnitRepository, CreateProductPurchaseUnitRepository>();
             
-
+            //Produts Sale Units
+            services.AddScoped<ICreateProductSaleUnitRepository, CreateProductSaleUnitRepository>();
+            
         }
 
         private static void CmmandsHandlers(

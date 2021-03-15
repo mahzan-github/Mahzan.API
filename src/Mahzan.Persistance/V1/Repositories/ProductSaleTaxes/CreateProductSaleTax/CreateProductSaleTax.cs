@@ -29,7 +29,8 @@ namespace Mahzan.Persistance.V1.Repositories.ProductSaleTaxes.CreateProductSaleT
                 values
                 (
                  @product_sale_tax_id,
-                 @product_tax_id       
+                 @product_tax_id,
+                 @product_id      
                 )
                 returning product_sale_tax_id;
                 ";

@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace MAhzan.Persistance.V1.Repositories._Base
+namespace Mahzan.Persistance.V1.Repositories._Base
 {
     public interface IBaseInsertRepository<TEntity>
     {

@@ -214,10 +214,71 @@ create table if not exists "product_purchase_units"
 */
 create table if not exists "product_sale_units"
 (
-    product_sale_unit_id    uuid            NOT NULL,
+    product_sale_unit_id        uuid            NOT NULL,
     abbreviation                varchar(25)     NULL,
     description                 varchar(50)     NOT NULL,
     company_id                  uuid            NOT NULL,
     PRIMARY KEY (product_sale_unit_id),
     FOREIGN KEY (company_id) REFERENCES companies(company_id)
 );
+
+/*  Table Name:     Product Taxes
+    Description:    Contiene los posibles impuestos aplicables a los productos
+*/
+create table if not exists "product_taxes"
+(
+    product_tax_id              uuid            NOT NULL,
+    "name"                      varchar(25)     NOT NULL,
+    percentage                  float           NOT NULL,
+    print_on_ticket             uuid            NOT NULL,
+    company_id                  uuid            NOT NULL,
+    PRIMARY KEY (product_tax_id),
+    FOREIGN KEY (company_id) REFERENCES companies(company_id)
+);
+
+/*  Table Name:     Products
+    Description:    Contiene los productos
+*/
+create table if not exists "products"
+(
+    product_id                  uuid            NOT NULL,
+    key_code                    varchar(25)     NULL,
+    key_alternative_code        varchar(25)     NULL,
+    description                 varchar(100)    NOT NULL,
+    product_catagory_id         uuid            NULL,
+    product_department_id       uuid            NULL,
+    product_purchase_unit_id    uuid            NULL,
+    product_sale_unit_id        uuid            NULL,
+    factor                      numeric(5,2)    NULL,
+    company_id                  uuid            NOT NULL,
+    PRIMARY KEY (product_id),
+    FOREIGN KEY (company_id) REFERENCES companies(company_id)
+);
+/*  Table Name:     Product Sale Taxes
+    Description:    Contiene los impuestos que serán aplicados al articulo
+                    al momento de la venta.
+*/
+create table if not exists "product_sale_taxes"
+(
+    product_sale_tax_id         uuid            NOT NULL,
+    product_tax_id              uuid            NOT NULL,
+    PRIMARY KEY (product_sale_tax_id),
+    FOREIGN KEY (product_tax_id) REFERENCES product_taxes(product_tax_id)   
+);
+
+/*  Table Name:     Product Sale Prices
+    Description:    Contiene los diferentes precios que pueden ser asignado
+                    al momento de la venta
+*/
+create table if not exists "product_sale_prices"
+(
+    product_sale_price_id       uuid            NOT NULL,
+    price_type                  varchar(25)     NOT NULL,  --PUBLICO, MAYOREO, 
+    price_buy                   numeric(7,2)    NULL,
+    utility                     numeric(3,2)    NULL,
+    price                       numeric(7,2)    NOT NULL,
+    cost                        numeric(7,2)    NULL,
+    product_id                  uuid            NOT NULL,
+    PRIMARY KEY (product_sale_price_id),
+    FOREIGN KEY (product_id) REFERENCES products(product_id)
+); 

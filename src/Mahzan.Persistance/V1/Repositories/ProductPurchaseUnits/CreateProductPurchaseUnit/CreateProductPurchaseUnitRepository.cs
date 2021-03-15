@@ -29,9 +29,9 @@ namespace Mahzan.Persistance.V1.Repositories.ProductPurchaseUnits.CreateProductP
             };
         }
 
-        protected override async void HandlePrevalidations(CreateProductPurchaseUnitDto dto)
+        protected override void HandlePrevalidations(CreateProductPurchaseUnitDto dto)
         {
-            if (await AbbreviationExist(dto.Abbreviation))
+            if (AbbreviationExist(dto.Abbreviation))
             {
                 throw new CreateProductPurchaseUnitArgumentException(
                     $"La abreviatura {dto.Abbreviation} ya existe."
@@ -41,7 +41,7 @@ namespace Mahzan.Persistance.V1.Repositories.ProductPurchaseUnits.CreateProductP
         
         #region :: Prevalidations ::
 
-        private async Task<bool> AbbreviationExist(
+        private bool AbbreviationExist(
             string abbreviation)
         {
             bool result = false;
@@ -53,8 +53,8 @@ namespace Mahzan.Persistance.V1.Repositories.ProductPurchaseUnits.CreateProductP
             ";
 
             IEnumerable<Models.Entities.ProductPurchaseUnits> productPurchaseUnits;
-            productPurchaseUnits = await Connection
-                .QueryAsync<Models.Entities.ProductPurchaseUnits>(
+            productPurchaseUnits = Connection
+                .Query<Models.Entities.ProductPurchaseUnits>(
                     sql,
                     new
                     {

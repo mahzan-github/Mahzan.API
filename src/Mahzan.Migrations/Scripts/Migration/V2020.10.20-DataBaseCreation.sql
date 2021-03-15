@@ -262,9 +262,11 @@ create table if not exists "product_sale_taxes"
 (
     product_sale_tax_id         uuid            NOT NULL,
     product_tax_id              uuid            NOT NULL,
+    product_id                  uuid            NOT NULL,
     PRIMARY KEY (product_sale_tax_id),
-    FOREIGN KEY (product_tax_id) REFERENCES product_taxes(product_tax_id)   
-);
+    FOREIGN KEY (product_tax_id) REFERENCES product_taxes(product_tax_id),
+    FOREIGN KEY (product_id) REFERENCES products(product_id)
+    );
 
 /*  Table Name:     Product Sale Prices
     Description:    Contiene los diferentes precios que pueden ser asignado

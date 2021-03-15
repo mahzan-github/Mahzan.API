@@ -11,6 +11,7 @@ using Mahzan.Persistance.V1.Repositories.ProductCategories.CreateProductCategory
 using Mahzan.Persistance.V1.Repositories.ProductDepartments.CreateProductDepartment;
 using Mahzan.Persistance.V1.Repositories.ProductPurchaseUnits.CreateProductPurchaseUnit;
 using Mahzan.Persistance.V1.Repositories.Products.CreateProduct;
+using Mahzan.Persistance.V1.Repositories.ProductSaleTaxes.CreateProductSaleTax;
 using Mahzan.Persistance.V1.Repositories.ProductSaleUnits.CreateProductSaleUnit;
 using Mahzan.Persistance.V1.Repositories.ProductTaxes.CreateProductTax;
 using Mahzan.Persistance.V1.Repositories.TaxRegimeCodes.GetTaxRegimeCodes;
@@ -68,6 +69,10 @@ namespace Mahzan.API.Services.Dependencies
             
             //Products
             services.AddScoped<ICreateProductRepository, CreateProductRepository>();
+            
+            //Product Sale Taxes
+            services.AddScoped<ICreateProductSaleTax, CreateProductSaleTax>();
+            
         }
 
         private static void CmmandsHandlers(

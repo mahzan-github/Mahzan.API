@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Mahzan.API.Application.Requests.Products;
@@ -36,9 +38,20 @@ namespace Mahzan.API.Controllers.V1
                 createProductViewModel  = await _createProductCommandHandler
                     .Handle(new CreateProductCommand
                     {
-                        KeyCode = request.KeyCode,
-                        KeyAlternativeCode = request.KeyAlternativeCode,
-                        Description = request.Description
+                        ProductCommand = new ProductCommand
+                        {
+                            KeyCode = request.ProductRequest.KeyCode,
+                            KeyAlternativeCode = request.ProductRequest.KeyAlternativeCode,
+                            Description = request.ProductRequest.Description,
+                            CompanyId = request.ProductRequest.CompanyId
+                        },
+                        ProductTaxesCommand = request
+                            .ProductTaxesRequest
+                            .Select(p =>  new ProductTaxCommand
+                            {
+                                ProductTaxId = p.ProductTaxId
+                            })
+                            .ToList()
                     });
             }
             catch (ArgumentException e)

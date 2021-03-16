@@ -33,6 +33,7 @@ namespace Mahzan.API.Controllers.V1
             CreateProductRequest request)
         {
             CreateProductViewModel createProductViewModel;
+            
             try
             {
                 createProductViewModel  = await _createProductCommandHandler
@@ -50,6 +51,19 @@ namespace Mahzan.API.Controllers.V1
                             .Select(p =>  new ProductTaxCommand
                             {
                                 ProductTaxId = p.ProductTaxId
+                            })
+                            .ToList(),
+                        ProductSalePricesCommand = request
+                            .ProductSalePriceRequest
+                            .Select(p => new ProductSalePriceCommand
+                            {
+                                PriceTypeEnum = p.PriceTypeEnum,
+                                PricePurchase = p.PricePurchase,
+                                PriceNet = p.PriceNet,
+                                PricePurchaseUnitWitoutTaxes = p.PricePurchaseUnitWitoutTaxes,
+                                PriceSaleUnitWitoutTaxes = p.PriceSaleUnitWitoutTaxes,
+                                Price = p.Price,
+                                Cost = p.Cost
                             })
                             .ToList()
                     });

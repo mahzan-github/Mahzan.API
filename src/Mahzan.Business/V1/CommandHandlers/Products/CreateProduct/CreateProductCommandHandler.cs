@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Mahzan.Business.V1.Commands.Products;
 using Mahzan.Persistance.V1.Dto.Products;
+using Mahzan.Persistance.V1.Dto.ProductSalePrices;
 using Mahzan.Persistance.V1.Dto.ProductSaleTaxes;
 using Mahzan.Persistance.V1.Repositories.Products.CreateProduct;
+using Mahzan.Persistance.V1.Repositories.ProductSalePrices.CreateProductSalePrices;
 using Mahzan.Persistance.V1.Repositories.ProductSaleTaxes.CreateProductSaleTax;
 using Mahzan.Persistance.V1.ViewModel.Products.CreateProduct;
 using Microsoft.Extensions.Logging;
@@ -20,28 +22,43 @@ namespace Mahzan.Business.V1.CommandHandlers.Products.CreateProduct
         private readonly ICreateProductRepository _createProductRepository;
 
         private readonly ICreateProductSaleTax _createProductSaleTax;
+
+        private readonly ICreateProductSalePricesRepository _createProductSalePricesRepository;
         
         public CreateProductCommandHandler(
             NpgsqlConnection connection,
             ILogger<CommandHandlerBase<CreateProductCommand, CreateProductViewModel>> logger, 
             ICreateProductRepository createProductRepository, 
-            ICreateProductSaleTax createProductSaleTax) 
+            ICreateProductSaleTax createProductSaleTax, 
+            ICreateProductSalePricesRepository createProductSalePricesRepository) 
             : base(connection, logger)
         {
             _createProductRepository = createProductRepository;
             _createProductSaleTax = createProductSaleTax;
+            _createProductSalePricesRepository = createProductSalePricesRepository;
         }
 
         protected override async Task<CreateProductViewModel> HandleTransaction(
             CreateProductCommand command)
         {
+            //Producto
             CreateProductDto createProductDto = await InsertInProducts(command);
 
+            //Impuestos del Producto
             if (command.ProductTaxesCommand.Any())
             {
                 await InsertInProductSaleTaxes(
                     createProductDto.ProductId,
                     command.ProductTaxesCommand);
+            }
+
+            //Precios del Producto
+            if (command.ProductSalePricesCommand.Any())
+            {
+                await InsertInProductSalePrices(
+                    createProductDto.ProductId,
+                    command.ProductSalePricesCommand
+                    );
             }
             
             return CreateProductViewModel.From(createProductDto);
@@ -79,6 +96,28 @@ namespace Mahzan.Business.V1.CommandHandlers.Products.CreateProduct
                         .ToList()
                 });
             
+        }
+
+        private async Task InsertInProductSalePrices(
+            Guid productId,
+            List<ProductSalePriceCommand> listProductSalePriceCommand)
+        {
+            await _createProductSalePricesRepository
+                .Insert(new CreateSalePricesDto
+                {
+                    ListPriceDto = listProductSalePriceCommand
+                        .Select(l => new PriceDto
+                        {
+                            PriceTypeEnum = l.PriceTypeEnum,
+                            PricePurchase = l.PricePurchase,
+                            PriceNet = l.PriceNet,
+                            PricePurchaseUnitWitoutTaxes = l.PricePurchaseUnitWitoutTaxes,
+                            PriceSaleUnitWitoutTaxes = l.PriceSaleUnitWitoutTaxes,
+                            Price = l.Price,
+                            Cost = l.Cost
+                        })
+                        .ToList()
+                });
         }
 
         #endregion

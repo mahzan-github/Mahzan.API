@@ -4,6 +4,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -71,10 +72,8 @@ namespace Mahzan.API.Services.Swagger
                     return versions.Any(v => $"v{v.ToString()}" == docName);
                 });
 
-                //var xmlFile = Path.ChangeExtension(typeof(Startup).Assembly.Location, ".xml");
-                //options.IncludeXmlComments(xmlFile);
-
-                options.DescribeAllEnumsAsStrings();
+                // var xmlFile = Path.ChangeExtension(typeof(Startup).Assembly.Location, ".xml");
+                // options.IncludeXmlComments(xmlFile);
             });
         }
     }

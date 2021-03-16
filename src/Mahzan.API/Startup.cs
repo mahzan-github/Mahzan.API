@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Converters;
 using Npgsql;
 
 namespace Mahzan.API
@@ -39,11 +40,19 @@ namespace Mahzan.API
             
             services.AddScoped(_ => new NpgsqlConnection(_configuration.GetConnectionString("Mahzan")));
 
+            services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.Converters.Add(new StringEnumConverter());
+                });
+            
             //Servicios Dependencies
             services
                 .ConfigureServices(
                     _configuration
                 );
+            
+            services.AddSwaggerGenNewtonsoftSupport();
 
             //Handle Errors
             services.AddMvc(options => { options.Filters.Add(typeof(UnhandledException)); })

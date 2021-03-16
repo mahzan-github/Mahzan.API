@@ -17,10 +17,12 @@ namespace Mahzan.Persistance.V1.Repositories.ProductSalePrices.CreateProductSale
         {
         }
 
-        protected override Task<CreateSalePricesDto> InsertInternal(
+        protected override async Task<CreateSalePricesDto> InsertInternal(
             CreateSalePricesDto dto)
         {
-            throw new System.NotImplementedException();
+            await InsertInProductSalesPrices(dto);
+
+            return dto;
         }
 
         #region :: Create Sale Prices Steps ::

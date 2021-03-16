@@ -116,7 +116,8 @@ namespace Mahzan.Business.V1.CommandHandlers.Products.CreateProduct
                             Price = l.Price,
                             Cost = l.Cost
                         })
-                        .ToList()
+                        .ToList(),
+                    ProductId = productId
                 });
         }
 

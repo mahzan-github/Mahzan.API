@@ -109,10 +109,6 @@ namespace Mahzan.Business.V1.CommandHandlers.Products.CreateProduct
                         .Select(l => new PriceDto
                         {
                             PriceTypeEnum = l.PriceTypeEnum,
-                            PricePurchase = l.PricePurchase,
-                            PriceNet = l.PriceNet,
-                            PricePurchaseUnitWitoutTaxes = l.PricePurchaseUnitWitoutTaxes,
-                            PriceSaleUnitWitoutTaxes = l.PriceSaleUnitWitoutTaxes,
                             Price = l.Price,
                             Cost = l.Cost
                         })

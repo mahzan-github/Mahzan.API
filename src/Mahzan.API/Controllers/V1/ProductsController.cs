@@ -44,6 +44,11 @@ namespace Mahzan.API.Controllers.V1
                             KeyCode = request.ProductRequest.KeyCode,
                             KeyAlternativeCode = request.ProductRequest.KeyAlternativeCode,
                             Description = request.ProductRequest.Description,
+                            ProductCatagoryId = request.ProductRequest.ProductCatagoryId,
+                            ProductDepartmentId = request.ProductRequest.ProductDepartmentId,
+                            ProductPurchaseUnitId = request.ProductRequest.ProductPurchaseUnitId,
+                            ProductSaleUnitId = request.ProductRequest.ProductSaleUnitId,
+                            Factor = request.ProductRequest.Factor,
                             CompanyId = request.ProductRequest.CompanyId
                         },
                         ProductTaxesCommand = request
@@ -58,10 +63,6 @@ namespace Mahzan.API.Controllers.V1
                             .Select(p => new ProductSalePriceCommand
                             {
                                 PriceTypeEnum = p.PriceTypeEnum,
-                                PricePurchase = p.PricePurchase,
-                                PriceNet = p.PriceNet,
-                                PricePurchaseUnitWitoutTaxes = p.PricePurchaseUnitWitoutTaxes,
-                                PriceSaleUnitWitoutTaxes = p.PriceSaleUnitWitoutTaxes,
                                 Price = p.Price,
                                 Cost = p.Cost
                             })

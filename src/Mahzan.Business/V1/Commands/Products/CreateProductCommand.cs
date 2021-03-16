@@ -20,6 +20,16 @@ namespace Mahzan.Business.V1.Commands.Products
         public string KeyAlternativeCode { get; set; }
         
         public string Description { get; set; }
+        
+        public Guid? ProductCatagoryId { get; set; }
+        
+        public Guid? ProductDepartmentId { get; set; }
+        
+        public Guid? ProductPurchaseUnitId { get; set; }
+        
+        public Guid? ProductSaleUnitId { get; set; }
+        
+        public double? Factor { get; set; }
 
         public Guid CompanyId { get; set; }
     }
@@ -35,7 +45,7 @@ namespace Mahzan.Business.V1.Commands.Products
 
         public double  PricePurchase { get; set; }
         
-        public double  PriceNet { get; set; }
+        public bool  PriceNet { get; set; }
         
         public double  PricePurchaseUnitWitoutTaxes { get; set; }
         

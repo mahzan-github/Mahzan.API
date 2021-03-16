@@ -1,7 +1,11 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Mahzan.Persistance.V1.Dto.Products;
+using Mahzan.Persistance.V1.Exeptions.Products.CreateProduct;
 using Mahzan.Persistance.V1.Repositories._Base;
 using Mahzan.Persistance.V1.Repositories.ProductCategories.CreateProductCategory;
 using Npgsql;
@@ -29,11 +33,47 @@ namespace Mahzan.Persistance.V1.Repositories.Products.CreateProduct
 
         protected override void HandlePrevalidations(CreateProductDto dto)
         {
-            base.HandlePrevalidations(dto);
+            if (KeyCodeExistInCompany(dto.CompanyId,dto.KeyCode))
+            {
+                throw new CreateProductArgumentException(
+                    $"El código {dto.KeyCode} ya existe."
+                    );
+            }
         }
 
         #region :: Prevalidations ::
 
+        private bool KeyCodeExistInCompany(
+            Guid companyId,
+            string keyCode)
+        {
+            bool result = false;
+            
+            string sql = @"
+                select * 
+                from    products
+                where   key_code = @key_code
+                and     company_id = @company_id
+            ";
+
+            IEnumerable<Models.Entities.Products> products;
+            products = Connection
+                .Query<Models.Entities.Products>(
+                    sql,
+                    new
+                    {
+                        company_id = companyId,
+                        key_code = keyCode
+                    });
+
+            if (products.Any())
+            {
+                result = true;
+            }
+
+            return result;
+        }
+        
         //TODO:Si la cetgoria viene validar que exista
         
         //TODO:Si el departemanto viene validar que exista

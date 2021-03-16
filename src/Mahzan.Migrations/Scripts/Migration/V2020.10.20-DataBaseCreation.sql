@@ -276,14 +276,11 @@ create table if not exists "product_sale_prices"
 (
     product_sale_price_id               uuid            NOT NULL,
     price_type                          varchar(25)     NOT NULL,  --PUBLICO, MAYOREO, MENUDEO
-    price_purchase                      numeric(7,2)    NULL,
-    price_net                           numeric(7,2)    NULL,
-    price_purchase_unit_without_taxes   numeric(7,2)    NULL,
-    price_sale_unit_without_taxes       numeric(7,2)    NULL,
-    utility                             numeric(3,2)    NULL,
     price                               numeric(7,2)    NOT NULL,
     cost                                numeric(7,2)    NULL,
+    utility                             numeric(7,2)    NULL,
+    utility_percentage                  numeric(3,2)    NULL,
     product_id                          uuid            NOT NULL,
     PRIMARY KEY (product_sale_price_id),
     FOREIGN KEY (product_id) REFERENCES products(product_id)
-    );
+);

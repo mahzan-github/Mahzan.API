@@ -26,6 +26,15 @@ namespace Mahzan.API.Application.Requests.Products
         [Required]
         public string Description { get; set; }
         
+        public Guid? ProductCatagoryId { get; set; }
+        
+        public Guid? ProductDepartmentId { get; set; }
+        
+        public Guid? ProductPurchaseUnitId { get; set; }
+        
+        public Guid? ProductSaleUnitId { get; set; }
+        
+        public double? Factor { get; set; }
         [Required]
         public Guid CompanyId { get; set; }
     }
@@ -38,14 +47,6 @@ namespace Mahzan.API.Application.Requests.Products
     public class ProductSalePriceRequest
     {
         public PriceTypeEnum PriceTypeEnum { get; set; }
-
-        public double  PricePurchase { get; set; }
-        
-        public double  PriceNet { get; set; }
-        
-        public double  PricePurchaseUnitWitoutTaxes { get; set; }
-        
-        public double  PriceSaleUnitWitoutTaxes { get; set; }
         public double  Price { get; set; }
         public double  Cost { get; set; }
     }

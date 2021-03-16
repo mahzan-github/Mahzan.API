@@ -2,8 +2,8 @@ using System;
 using System.Threading.Tasks;
 using Dapper;
 using Mahzan.Persistance.V1.Dto.ProductSalePrices;
+using Mahzan.Persistance.V1.Exeptions.Products.CreateProduct;
 using Mahzan.Persistance.V1.Repositories._Base;
-using Mahzan.Persistance.V1.Repositories.ProductSaleTaxes.CreateProductSaleTax;
 using Npgsql;
 
 namespace Mahzan.Persistance.V1.Repositories.ProductSalePrices.CreateProductSalePrices
@@ -37,26 +37,20 @@ namespace Mahzan.Persistance.V1.Repositories.ProductSalePrices.CreateProductSale
                 (
                  product_sale_price_id,
                  price_type,
-                 price_purchase,
-                 price_net,
-                 price_purchase_unit_without_taxes,
-                 price_sale_unit_without_taxes,
-                 utility,
                  price,
                  cost,
+                 utility,
+                 utility_percentage,
                  product_id
                 )
                 values
                 (
                  @product_sale_price_id,
                  @price_type,
-                 @price_purchase,
-                 @price_net,
-                 @price_purchase_unit_without_taxes,
-                 @price_sale_unit_without_taxes,
-                 @utility,
                  @price,
                  @cost,
+                 @utility,
+                 @utility_percentage,
                  @product_id
                 )
                 returning product_sale_price_id;
@@ -69,13 +63,10 @@ namespace Mahzan.Persistance.V1.Repositories.ProductSalePrices.CreateProductSale
                         {
                             product_sale_price_id = Guid.NewGuid(),
                             price_type = priceDto.PriceTypeEnum.ToString(),
-                            price_purchase = priceDto.PricePurchase,
-                            price_net = priceDto.PriceNet,
-                            price_purchase_unit_without_taxes = priceDto.PricePurchaseUnitWitoutTaxes,
-                            price_sale_unit_without_taxes = priceDto.PriceSaleUnitWitoutTaxes,
-                            utility = priceDto.Utility,
                             price = priceDto.Price,
                             cost = priceDto.Cost,
+                            utility = priceDto.Price - priceDto.Cost,
+                            utility_percentage = await CalculateUtilityPercentaje(priceDto.Price,priceDto.Cost),
                             product_id = dto.ProductId
                         }
                     );
@@ -83,5 +74,33 @@ namespace Mahzan.Persistance.V1.Repositories.ProductSalePrices.CreateProductSale
         }
 
         #endregion
+        
+        #region :: Private Metods ::
+
+        private async Task<double> CalculateUtilityPercentaje(
+            double price,
+            double cost)
+        {
+            double result = 0;
+
+            try
+            {
+                result = (((price - cost ) * 100)/price);
+            }
+            catch (Exception e)
+            {
+                throw new CreateProductInvalidOperationException(
+                    $"Error al intentar calcular la utilidad en porcentaje {e.Message}"
+                );
+            }
+            
+            
+
+            return Math.Round(result, 2);
+        }
+
+        #endregion
+        
+        
     }
 }

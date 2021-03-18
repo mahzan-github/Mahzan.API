@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Mahzan.API.Application.Requests.User;
@@ -26,10 +27,6 @@ namespace Mahzan.API.Controllers.V1
 
         private readonly ILogInCommandHandler _logInCommandHandler;
         
-        //private readonly IConfirmEmailRepository _confirmEmailRepository;
-
-
-
         private readonly ILogger<UserController> _logger;
 
         public UserController(
@@ -116,7 +113,7 @@ namespace Mahzan.API.Controllers.V1
         [AllowAnonymous]
         [HttpGet("user:sign-in")]
         [ProducesResponseType(typeof(LogInViewModel), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> SignIn(string userName, string passowrd)
+        public async Task<IActionResult> SignIn(string userName, string password)
         {
         
             LogInViewModel logInViewModel = null;
@@ -126,7 +123,7 @@ namespace Mahzan.API.Controllers.V1
                     .Handle(new LogInCommad
                     {
                         UserName = userName,
-                        Password = passowrd
+                        Password = password
                     });
             }
             catch (ArgumentException ex)
@@ -139,6 +136,19 @@ namespace Mahzan.API.Controllers.V1
             }
         
             return Ok(logInViewModel);
+        }
+
+        [Authorize]
+        [HttpGet("user:get-by-token")]
+        [ProducesResponseType(typeof(GetByTokenViewModel), (int) HttpStatusCode.OK)]
+        public async Task<IActionResult> GetByToken()
+        {
+            return Ok(new GetByTokenViewModel
+            {
+                UserName = HttpContext.User.Claims.ToList()[0].Value,
+                Fullname = HttpContext.User.Claims.ToList()[0].Value,
+                Language = "es"
+            });
         }
     }
 }

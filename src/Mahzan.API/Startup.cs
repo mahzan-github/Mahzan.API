@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Mahzan.API.Exceptions;
+using Mahzan.API.Extensions.CORS;
 using Mahzan.API.Services;
 using Mahzan.API.Services.Jwt;
 using Mahzan.Business.EventsServices.Email;
@@ -62,6 +63,8 @@ namespace Mahzan.API
                         options.InvalidModelStateResponseFactory = InvalidModelStateHandler.Handler;
                     });
 
+            //AddCors
+            services.AddCors(_configuration.GetSection("Cors"));
 
             //Email 
             services.Configure<EmailSettings>(
@@ -102,6 +105,8 @@ namespace Mahzan.API
             app.UseAuthentication();
 
             app.UseAuthorization();
+            
+            app.UseCors(CorsExtension.CorsDefaultPolicyName);
 
             app.UseEndpoints(endpoints =>
             {

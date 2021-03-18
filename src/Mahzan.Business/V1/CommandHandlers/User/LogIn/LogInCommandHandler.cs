@@ -45,7 +45,7 @@ namespace Mahzan.Business.V1.CommandHandlers.User.LogIn
 
             LogInViewModel logInViewModel = new LogInViewModel();
             
-            logInViewModel.Token = await GetToken(logInDto);
+            logInViewModel.AccessToken = await GetToken(logInDto);
 
             return logInViewModel;
         }

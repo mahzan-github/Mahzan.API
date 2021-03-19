@@ -31,9 +31,13 @@ namespace Mahzan.Persistance.V1.Repositories.User.LogIn
 
             Members member = await FindMember(user);
 
+            Roles role = await FindRoleName(user);
+
             return dto with
             {
-                MemberId = member.MemberId
+                UserId = user.UserId,
+                MemberId = member.MemberId,
+                RoleName = role.Name
             };
         }
 
@@ -190,6 +194,33 @@ namespace Mahzan.Persistance.V1.Repositories.User.LogIn
             }
 
             return members.FirstOrDefault();   
+        }
+
+        private async Task<Roles> FindRoleName(Users user)
+        {
+            string sql = @"
+                select  * 
+                from    roles
+                inner join user_role on user_role.role_id = roles.role_id
+                where   user_role.user_id=@user_id
+            ";
+
+            IEnumerable<Roles> userRole = await Connection
+                .QueryAsync<Roles>(
+                    sql,
+                    new {
+                        user_id = user.UserId
+                    }
+                );
+
+            if (!userRole.Any())
+            {
+                throw new LoginArgumentException(
+                    $"No fue posible encontrar un role asignado para el usuario."
+                );
+            }
+
+            return userRole.FirstOrDefault();      
         }
 
         #endregion

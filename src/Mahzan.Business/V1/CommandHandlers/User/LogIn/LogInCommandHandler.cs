@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -68,10 +69,14 @@ namespace Mahzan.Business.V1.CommandHandlers.User.LogIn
 
             string result = string.Empty;
 
-            Claim[] claims = new[] {
-                new Claim(JwtRegisteredClaimNames.Sub, logInDto.UserName),
+            List<Claim> claims = new List<Claim>()
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, logInDto.UserId.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, logInDto.MemberId.ToString())
             };
+
+            claims.Add(new Claim(ClaimTypes.Role, logInDto.RoleName));
+            claims.Add(new Claim(ClaimTypes.Name, logInDto.UserName));
 
             SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             //SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

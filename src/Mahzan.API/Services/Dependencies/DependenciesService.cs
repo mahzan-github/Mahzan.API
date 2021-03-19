@@ -7,6 +7,7 @@ using Mahzan.Business.V1.CommandHandlers.Products.CreateProduct;
 using Mahzan.Business.V1.CommandHandlers.User;
 using Mahzan.Business.V1.CommandHandlers.User.LogIn;
 using Mahzan.Persistance.V1.Repositories.Company;
+using Mahzan.Persistance.V1.Repositories.MenuRole.GetAside;
 using Mahzan.Persistance.V1.Repositories.ProductCategories.CreateProductCategory;
 using Mahzan.Persistance.V1.Repositories.ProductDepartments.CreateProductDepartment;
 using Mahzan.Persistance.V1.Repositories.ProductPurchaseUnits.CreateProductPurchaseUnit;
@@ -76,6 +77,10 @@ namespace Mahzan.API.Services.Dependencies
             
             //Product Sale Prices
             services.AddScoped<ICreateProductSalePricesRepository, CreateProductSalePricesRepository>();
+            
+            //Menu Roles
+            services.AddScoped<IGetAsideRepository, GetAsideRepository>();
+            
         }
 
         private static void CmmandsHandlers(

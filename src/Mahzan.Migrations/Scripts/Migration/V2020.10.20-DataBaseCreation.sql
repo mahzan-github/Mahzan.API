@@ -284,3 +284,44 @@ create table if not exists "product_sale_prices"
     PRIMARY KEY (product_sale_price_id),
     FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
+
+/*  Table Name:     Menu de Role
+    Description:    Contiene el menú de un role que será visible en la aplicacion web
+*/
+create table if not exists "menu_role"
+(
+    menu_role_id                            uuid            NOT NULL,
+    menu_section_id                         uuid            NULL,
+    menu_selection_id                       uuid            NULL,
+    menu_sub_menu_id                        uuid            NULL,
+    menu_sub_menu_item_id                   uuid            NULL,
+    "order"                                 int             NOT NULL,
+    role_id                                 uuid            NOT NULL,
+    PRIMARY KEY (menu_role_id),
+    FOREIGN KEY (role_id) REFERENCES roles(role_id),
+    FOREIGN KEY (menu_section_id) REFERENCES menu_sections(menu_section_id)
+);
+
+/*  Table Name:     Menu Sections
+    Description:    Contiene las posibles secciones del menú
+*/
+create table if not exists "menu_sections"
+(
+    menu_section_id                         uuid            NOT NULL,
+    "section"                               varchar(25)     NOT NULL,
+    PRIMARY KEY (menu_section_id)
+);
+
+/*  Table Name:     Menu Selections
+    Description:    Contiene las posibles selecciones de la seccion
+*/
+create table if not exists "menu_selections"
+(
+    menu_selection_id                         uuid            NOT NULL,
+    "title"                                   varchar(25)     NOT NULL,
+    root                                      boolean         NOT NULL,
+    icon                                      varchar(25)     NOT NULL,
+    menu_section_id                         uuid            NOT NULL,
+    PRIMARY KEY (menu_selection_id),
+    FOREIGN KEY (menu_section_id) REFERENCES menu_sections(menu_section_id)
+);

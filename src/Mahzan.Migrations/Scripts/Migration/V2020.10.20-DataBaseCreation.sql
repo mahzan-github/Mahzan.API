@@ -317,11 +317,38 @@ create table if not exists "menu_sections"
 */
 create table if not exists "menu_selections"
 (
-    menu_selection_id                         uuid            NOT NULL,
-    "title"                                   varchar(25)     NOT NULL,
-    root                                      boolean         NOT NULL,
-    icon                                      varchar(25)     NOT NULL,
-    menu_section_id                         uuid            NOT NULL,
+    menu_selection_id                           uuid            NOT NULL,
+    "title"                                     varchar(25)     NOT NULL,
+    root                                        boolean         NOT NULL,
+    icon                                        varchar(50)     NOT NULL,
+    menu_section_id                             uuid            NOT NULL,
     PRIMARY KEY (menu_selection_id),
     FOREIGN KEY (menu_section_id) REFERENCES menu_sections(menu_section_id)
+);
+
+/*  Table Name:     Menu Sub Menu
+    Description:    Contiene las posibles menus de la selección
+*/
+create table if not exists "menu_sub_menu"
+(
+    menu_sub_menu_id                         uuid            NOT NULL,
+    "title"                                  varchar(25)     NOT NULL,
+    page                                     varchar(25)     NOT NULL,
+    bullet                                   boolean         NOT NULL,
+    menu_selection_id                          uuid            NOT NULL,
+    PRIMARY KEY (menu_sub_menu_id),
+    FOREIGN KEY (menu_selection_id) REFERENCES menu_selections(menu_selection_id)
+);
+
+/*  Table Name:     Menu Sub Menu Items
+    Description:    Contiene las posibles items del sub menu
+*/
+create table if not exists "menu_sub_menu_items"
+(
+    menu_sub_menu_item_id                    uuid            NOT NULL,
+    "title"                                  varchar(25)     NOT NULL,
+    page                                     varchar(25)     NOT NULL,
+    menu_sub_menu_id                         uuid            NOT NULL,
+    PRIMARY KEY (menu_sub_menu_item_id),
+    FOREIGN KEY (menu_sub_menu_id) REFERENCES menu_sub_menu(menu_sub_menu_id)
 );

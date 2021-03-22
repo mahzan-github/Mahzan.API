@@ -24,10 +24,10 @@ namespace Mahzan.Persistance.V1.ViewModel.MenuRole
         
         public string Icon { get; set; }
 
-        public List<SubMenu> SubMenu = new List<SubMenu>();
+        public List<Submenu> Submenu = new List<Submenu>();
     }
 
-    public class SubMenu
+    public class Submenu
     {
         public Guid MenuSubMenuId { get; set; }
 

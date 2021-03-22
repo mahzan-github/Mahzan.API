@@ -38,19 +38,42 @@ namespace Mahzan.Persistance.V1.Repositories.MenuRole.GetAside
 
             foreach (var item in menu_role)
             {
+                //Section
                 if (item.MenuSectionId != null
-                    && item.MenuSelectionId != null)
+                    && item.MenuSelectionId == null
+                    && item.MenuSubMenuId == null)
                 {
                     MenuSection section = await GetSection(item);
                     result.Items.Add(section);
                 }
 
+                //Selection
                 if (item.MenuSectionId !=null 
                 && item.MenuSelectionId !=null
                 && item.MenuSubMenuId ==null)
                 {
                     MenuSection section = await GetSelection(item);
                     result.Items.Add(section);
+                }
+                
+                //Sub Menu
+                if (item.MenuSectionId != null
+                    && item.MenuSelectionId != null
+                    && item.MenuSubMenuId !=null)
+                {
+                    MenuSection sectionExist = (
+                        from ms in result.Items
+                        where ms.MenuSelectionId == item.MenuSelectionId
+                        select ms
+                    ).FirstOrDefault();
+                    
+                    result.Items
+                        .FirstOrDefault(
+                            x 
+                                => x.MenuSelectionId == item.MenuSelectionId 
+                                   && x.MenuSelectionId == item.MenuSelectionId)
+                        .Submenu
+                        .Add(await GetSubMenu(item.MenuSubMenuId.Value));
                 }
             }
 
@@ -184,6 +207,27 @@ namespace Mahzan.Persistance.V1.Repositories.MenuRole.GetAside
                 Bullet = menuSelection.FirstOrDefault().Bullet,
                 Icon = menuSelection.FirstOrDefault().Icon
             };
+        }
+
+        private async Task<Submenu> GetSubMenu(
+            Guid menuSubMenuId)
+        {
+            string sql = @"
+                select * from menu_sub_menu
+                where menu_sub_menu_id = @menu_sub_menu_id
+            ";
+
+            IEnumerable<Submenu> menuSubMenu;
+            menuSubMenu = await Connection
+                .QueryAsync<Submenu>(
+                    sql,
+                    new
+                    {
+                        menu_sub_menu_id = menuSubMenuId
+                    });
+
+            return menuSubMenu.FirstOrDefault();
+
         }
     }
 }

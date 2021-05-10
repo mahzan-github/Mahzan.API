@@ -22,6 +22,11 @@ namespace Mahzan.Business.V1.CommandHandlers
             Connection = connection;
         }
 
+        protected CommandHandlerBase()
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// </summary>
         protected ILogger<CommandHandlerBase<TCommand, TResponse>> Logger { get; }

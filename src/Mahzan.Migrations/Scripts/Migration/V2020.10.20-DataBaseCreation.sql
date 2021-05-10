@@ -333,7 +333,7 @@ create table if not exists "menu_sub_menu"
 (
     menu_sub_menu_id                         uuid            NOT NULL,
     "title"                                  varchar(25)     NOT NULL,
-    page                                     varchar(25)     NOT NULL,
+    page                                     varchar(50)     NOT NULL,
     bullet                                   boolean         NOT NULL,
     menu_selection_id                          uuid            NOT NULL,
     PRIMARY KEY (menu_sub_menu_id),

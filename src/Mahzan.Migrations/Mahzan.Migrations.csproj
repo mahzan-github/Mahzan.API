@@ -26,9 +26,4 @@
     <PackageReference Include="dbup-core" Version="4.5.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Scripts\Util\" />
-    <Folder Include="Scripts\TestsData\" />
-  </ItemGroup>
-
 </Project>

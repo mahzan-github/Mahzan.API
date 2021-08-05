@@ -356,7 +356,7 @@ create table if not exists "menu_sub_menu_items"
 /*  Table Name:     Clients
     Description:    Contiene los datos de un cliente
 */
-create table if not exist "clients"
+create table if not exists "clients"
 (
     client_id                               uuid            NOT NULL,
     client_number                           varchar(50)     NULL,
@@ -370,18 +370,19 @@ create table if not exist "clients"
     email                                   varchar(100)    NULL,
     comments                                varchar(100)    NULL,
     PRIMARY KEY (client_id)
-);
+    );
 
 /*  Table Name:     Tickets
     Description:    Contiene la información de los tikets
 */
-create table if not exist "tickets"
+create table if not exists "tickets"
 (
     ticket_id                               uuid            NOT NULL,
     ticker_code                             varchar(100)    NOT NULL,
+    PRIMARY KEY (ticket_id)
     --tientda
     --operador (cajero)
-    --transferencia 
+    --transferencia
     --cliente
     --fecha:hora generación
 );

@@ -33,41 +33,48 @@ namespace Mahzan.API.Controllers.V1
             CreateProductRequest request)
         {
             CreateProductViewModel createProductViewModel;
-            
+            CreateProductCommand createProductCommand = new CreateProductCommand();
             try
             {
-                createProductViewModel  = await _createProductCommandHandler
-                    .Handle(new CreateProductCommand
-                    {
-                        ProductCommand = new ProductCommand
+                // Product (Required)
+                createProductCommand.ProductCommand = new ProductCommand
+                {
+                    KeyCode = request.ProductRequest.KeyCode,
+                    KeyAlternativeCode = request.ProductRequest.KeyAlternativeCode,
+                    Description = request.ProductRequest.Description,
+                    ProductCatagoryId = request.ProductRequest.ProductCatagoryId,
+                    ProductDepartmentId = request.ProductRequest.ProductDepartmentId,
+                    ProductPurchaseUnitId = request.ProductRequest.ProductPurchaseUnitId,
+                    ProductSaleUnitId = request.ProductRequest.ProductSaleUnitId,
+                    Factor = request.ProductRequest.Factor,
+                    CompanyId = request.ProductRequest.CompanyId
+                };
+                
+                // Taxes (Optional)
+                if (request.ProductTaxesRequest!=null)
+                {
+                    createProductCommand.ProductTaxesCommand = request
+                        .ProductTaxesRequest
+                        .Select(p => new ProductTaxCommand
                         {
-                            KeyCode = request.ProductRequest.KeyCode,
-                            KeyAlternativeCode = request.ProductRequest.KeyAlternativeCode,
-                            Description = request.ProductRequest.Description,
-                            ProductCatagoryId = request.ProductRequest.ProductCatagoryId,
-                            ProductDepartmentId = request.ProductRequest.ProductDepartmentId,
-                            ProductPurchaseUnitId = request.ProductRequest.ProductPurchaseUnitId,
-                            ProductSaleUnitId = request.ProductRequest.ProductSaleUnitId,
-                            Factor = request.ProductRequest.Factor,
-                            CompanyId = request.ProductRequest.CompanyId
-                        },
-                        ProductTaxesCommand = request
-                            .ProductTaxesRequest
-                            .Select(p =>  new ProductTaxCommand
-                            {
-                                ProductTaxId = p.ProductTaxId
-                            })
-                            .ToList(),
-                        ProductSalePricesCommand = request
-                            .ProductSalePriceRequest
-                            .Select(p => new ProductSalePriceCommand
-                            {
-                                PriceTypeEnum = p.PriceTypeEnum,
-                                Price = p.Price,
-                                Cost = p.Cost
-                            })
-                            .ToList()
-                    });
+                            ProductTaxId = p.ProductTaxId
+                        })
+                        .ToList();
+                }
+                
+                // Product Price & Cost (Required)
+                createProductCommand.ProductSalePricesCommand = request
+                    .ProductSalePriceRequest
+                    .Select(p => new ProductSalePriceCommand
+                    {
+                        PriceTypeEnum = p.PriceTypeEnum,
+                        Price = p.Price,
+                        Cost = p.Cost
+                    })
+                    .ToList();
+                
+                createProductViewModel  = await _createProductCommandHandler
+                    .Handle(createProductCommand);
             }
             catch (ArgumentException e)
             {

@@ -27,7 +27,7 @@ create table if not exists "members"
 (
     member_id                 uuid            NOT NULL,
     "name"                    varchar(50)     NOT NULL,
-    phone                     varchar(18)     NOT NULL,
+    phone                     varchar(19)     NOT NULL,
     user_id                   uuid            NOT NULL,
     member__pattern_id        uuid            NULL,
     PRIMARY KEY (member_id),

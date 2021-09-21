@@ -45,7 +45,7 @@ namespace Mahzan.Business.V1.CommandHandlers.Products.CreateProduct
             CreateProductDto createProductDto = await InsertInProducts(command);
 
             //Impuestos del Producto
-            if (command.ProductTaxesCommand.Any())
+            if (command.ProductTaxesCommand!= null)
             {
                 await InsertInProductSaleTaxes(
                     createProductDto.ProductId,
@@ -53,7 +53,7 @@ namespace Mahzan.Business.V1.CommandHandlers.Products.CreateProduct
             }
 
             //Precios del Producto
-            if (command.ProductSalePricesCommand.Any())
+            if (command.ProductSalePricesCommand!= null)
             {
                 await InsertInProductSalePrices(
                     createProductDto.ProductId,

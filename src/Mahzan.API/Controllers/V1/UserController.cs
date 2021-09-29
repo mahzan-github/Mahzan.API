@@ -145,9 +145,9 @@ namespace Mahzan.API.Controllers.V1
         {
             return Ok(new GetByTokenViewModel
             {
-                UserName = HttpContext.User.Claims.ToList()[3].Value,
-                Fullname = HttpContext.User.Claims.ToList()[3].Value,
-                Language = "es"
+                username = HttpContext.User.Claims.ToList()[3].Value,
+                language = "es",
+                fullname = HttpContext.User.Claims.ToList()[3].Value
             });
         }
     }

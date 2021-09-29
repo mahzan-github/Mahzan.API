@@ -2,10 +2,10 @@ namespace Mahzan.Persistance.V1.ViewModel.User
 {
     public class GetByTokenViewModel
     {
-        public string UserName { get; set; }
+        public string username { get; set; }
 
-        public string Language { get; set; }
+        public string language { get; set; }
         
-        public string Fullname { get; set; }
+        public string fullname { get; set; }
     }
 }

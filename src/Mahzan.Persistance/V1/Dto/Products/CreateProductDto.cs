@@ -20,7 +20,7 @@ namespace Mahzan.Persistance.V1.Dto.Products
         
         public Guid? ProductSaleUnitId { get; set; }
         
-        public double Factor { get; set; }
+        public double? Factor { get; set; }
         
         public Guid CompanyId { get; set; }
     }

@@ -112,6 +112,74 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"productRequest\": {\n    \"keyCode\": \"1234567891011\",\n    \"keyAlternativeCode\": null,\n    \"description\": \"Descripción del producto\",\n    \"productCatagoryId\": \"0bb9422a-4f38-4efb-b308-3feb6079c8af\",\n    \"productDepartmentId\": \"a084e34e-b85f-4d1e-9274-f31c8f4bf423\",\n    \"productPurchaseUnitId\": \"2878aa3a-8d03-4b47-b6db-4ace5b9ecb68\",\n    \"productSaleUnitId\": \"3dd1f416-7f7b-44b7-8192-cfcf30e9518b\",\n    \"factor\": 1,\n    \"companyId\": \"462c7762-9d59-4bcb-94f2-1b4734fb760b\"\n  },\n  \"productTaxesRequest\": [\n    {\n      \"productTaxId\": \"7129b765-c004-49dc-9024-a152b202332c\"\n    }\n  ],\n  \"productSalePriceRequest\": [\n    {\n      \"priceTypeEnum\": \"GENERAL_PUBLIC\",\n      \"price\": 99.98,\n      \"cost\": 85.62\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5001/v1/product:create",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"v1",
+								"product:create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ProductTaxes",
+			"item": [
+				{
+					"name": "https://localhost:5001​/v1​/product-tax:create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"I.E.P.S\",\n  \"percentage\": 15.45,\n  \"printOnTicket\": true,\n  \"companyId\": \"462c7762-9d59-4bcb-94f2-1b4734fb760b\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5001/v1/product-tax:create",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"v1",
+								"product-tax:create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }

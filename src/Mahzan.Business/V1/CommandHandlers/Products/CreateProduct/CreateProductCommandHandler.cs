@@ -77,7 +77,12 @@ namespace Mahzan.Business.V1.CommandHandlers.Products.CreateProduct
                     KeyCode = command.ProductCommand.KeyCode,
                     KeyAlternativeCode = command.ProductCommand.KeyAlternativeCode,
                     Description = command.ProductCommand.Description,
-                    CompanyId = command.ProductCommand.CompanyId
+                    ProductCatagoryId = command.ProductCommand.ProductCatagoryId,
+                    ProductDepartmentId = command.ProductCommand.ProductDepartmentId,
+                    ProductPurchaseUnitId = command.ProductCommand.ProductPurchaseUnitId,
+                    ProductSaleUnitId = command.ProductCommand.ProductSaleUnitId,
+                    Factor = command.ProductCommand.Factor,
+                    CompanyId = command.ProductCommand.CompanyId,
                 });
 
             return createProductDto;

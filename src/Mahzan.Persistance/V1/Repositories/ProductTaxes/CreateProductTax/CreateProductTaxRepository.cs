@@ -54,7 +54,7 @@ namespace Mahzan.Persistance.V1.Repositories.ProductTaxes.CreateProductTax
         private async Task<Guid> InsertInProductTaxes(
             CreateProductTaxDto dto)
         {
-            Guid productTaxId = Guid.Empty;;
+            Guid productTaxId = Guid.Empty;
             
             string sql = @"
                 insert into product_taxes

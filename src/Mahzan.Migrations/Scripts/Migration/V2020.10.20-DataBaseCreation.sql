@@ -230,7 +230,7 @@ create table if not exists "product_taxes"
     product_tax_id              uuid            NOT NULL,
     "name"                      varchar(25)     NOT NULL,
     percentage                  float           NOT NULL,
-    print_on_ticket             uuid            NOT NULL,
+    print_on_ticket             boolean         NOT NULL,
     company_id                  uuid            NOT NULL,
     PRIMARY KEY (product_tax_id),
     FOREIGN KEY (company_id) REFERENCES companies(company_id)

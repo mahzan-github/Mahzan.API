@@ -47,7 +47,7 @@ namespace Mahzan.API.Application.Requests.Products
     public class ProductSalePriceRequest
     {
         public PriceTypeEnum PriceTypeEnum { get; set; }
-        public double  Price { get; set; }
-        public double  Cost { get; set; }
+        public decimal  Price { get; set; }
+        public decimal  Cost { get; set; }
     }
 }

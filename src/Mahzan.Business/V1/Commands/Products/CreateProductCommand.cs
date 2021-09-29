@@ -50,8 +50,8 @@ namespace Mahzan.Business.V1.Commands.Products
         public double  PricePurchaseUnitWitoutTaxes { get; set; }
         
         public double  PriceSaleUnitWitoutTaxes { get; set; }
-        public double  Price { get; set; }
+        public decimal  Price { get; set; }
         
-        public double  Cost { get; set; }
+        public decimal  Cost { get; set; }
     }
 }

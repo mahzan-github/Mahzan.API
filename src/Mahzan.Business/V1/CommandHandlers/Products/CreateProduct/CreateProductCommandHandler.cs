@@ -47,9 +47,12 @@ namespace Mahzan.Business.V1.CommandHandlers.Products.CreateProduct
             //Impuestos del Producto
             if (command.ProductTaxesCommand!= null)
             {
-                await InsertInProductSaleTaxes(
-                    createProductDto.ProductId,
-                    command.ProductTaxesCommand);
+                if (!command.ProductTaxesCommand.Any())
+                {
+                    await InsertInProductSaleTaxes(
+                        createProductDto.ProductId,
+                        command.ProductTaxesCommand);         
+                }
             }
 
             //Precios del Producto

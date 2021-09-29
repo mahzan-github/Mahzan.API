@@ -1,0 +1,117 @@
+{
+	"info": {
+		"_postman_id": "1179a4b9-686e-41db-a360-14076bed2a53",
+		"name": "Mahzan.API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "sign-up",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"mahzan\",\n  \"phone\": \"+52 1 55 2020 50508\",\n  \"email\": \"pax_217@hotmail.com\",\n  \"userName\": \"mahzan\",\n  \"password\": \"Mahzan21%\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5001/v1/user:sign-up",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"v1",
+								"user:sign-up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sign-in",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5001/v1/user:sign-in?userName=mahzan&password=Mahzan20%",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"v1",
+								"user:sign-in"
+							],
+							"query": [
+								{
+									"key": "userName",
+									"value": "mahzan"
+								},
+								{
+									"key": "password",
+									"value": "Mahzan20%"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Company",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4MTg5NDI0ZS01OTc5LTQyMGQtODIwOS05Y2U3Y2IzNmI5ZDIiLCJqdGkiOiIyZDFiNzAwZC0wMGVlLTQzZWQtYmMzNS0wNGIyNzc0NWQ0YjgiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJNRU1CRVIiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoibWFoemFuIiwiZXhwIjoxNjMyOTM5NzkxLCJpc3MiOiJodHRwOi8vb2VjLmNvbSIsImF1ZCI6Imh0dHA6Ly9vZWMuY29tIn0.399hxsgYoy0y7EzU_t6uhYofn1zNnu7uRhpuAHUJofQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"companyRequest\": {\n    \"rfc\": \"MADC8806188RA\",\n    \"curp\": \"MADC880618HDFLZR02\",\n    \"commercialName\": \"Mahzan Comercial\",\n    \"businessName\": \"Mahzan S.A. de C.V\",\n    \"email\": \"owner@mahzan.com\",\n    \"taxRegimeCodeId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"officePhone\": \"+52 1 55 5849 1209\",\n    \"mobilePhone\": \"+52 1 55 2020 5008\",\n    \"additionalInformation\": \"Alguna infomación adicional de la compañia\"\n  },\n  \"companyAdressesRequest\": [\n    {\n      \"adressType\": \"FISCAL_LOCATION\",\n      \"street\": \"cerrada del jagüey\",\n      \"exteriorNumber\": \"1\",\n      \"internalNumber\": null,\n      \"postalCode\": \"14400\"\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5001/v1/company:create",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"v1",
+								"company:create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

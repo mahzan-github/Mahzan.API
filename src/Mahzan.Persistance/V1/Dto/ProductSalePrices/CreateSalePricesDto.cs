@@ -13,7 +13,7 @@ namespace Mahzan.Persistance.V1.Dto.ProductSalePrices
     public class PriceDto
     {
         public PriceTypeEnum PriceTypeEnum { get; set; }
-        public double  Price { get; set; }
-        public double  Cost { get; set; }
+        public decimal  Price { get; set; }
+        public decimal  Cost { get; set; }
     }
 }

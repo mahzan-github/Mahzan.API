@@ -63,9 +63,9 @@ namespace Mahzan.Persistance.V1.Repositories.ProductSalePrices.CreateProductSale
                         {
                             product_sale_price_id = Guid.NewGuid(),
                             price_type = priceDto.PriceTypeEnum.ToString(),
-                            price = priceDto.Price,
-                            cost = priceDto.Cost,
-                            utility = priceDto.Price - priceDto.Cost,
+                            price = Math.Round((decimal)priceDto.Price, 2),
+                            cost = Math.Round((decimal)priceDto.Cost, 2),
+                            utility = Math.Round((decimal)(priceDto.Price - priceDto.Cost), 2),
                             utility_percentage = await CalculateUtilityPercentaje(priceDto.Price,priceDto.Cost),
                             product_id = dto.ProductId
                         }
@@ -77,11 +77,11 @@ namespace Mahzan.Persistance.V1.Repositories.ProductSalePrices.CreateProductSale
         
         #region :: Private Metods ::
 
-        private async Task<double> CalculateUtilityPercentaje(
-            double price,
-            double cost)
+        private async Task<decimal> CalculateUtilityPercentaje(
+            decimal price,
+            decimal cost)
         {
-            double result = 0;
+            decimal result = 0;
 
             try
             {
@@ -93,8 +93,8 @@ namespace Mahzan.Persistance.V1.Repositories.ProductSalePrices.CreateProductSale
                     $"Error al intentar calcular la utilidad en porcentaje {e.Message}"
                 );
             }
-            
-            
+
+
 
             return Math.Round(result, 2);
         }

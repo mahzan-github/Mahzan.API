@@ -180,6 +180,50 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Stores",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4MTg5NDI0ZS01OTc5LTQyMGQtODIwOS05Y2U3Y2IzNmI5ZDIiLCJqdGkiOiIyZDFiNzAwZC0wMGVlLTQzZWQtYmMzNS0wNGIyNzc0NWQ0YjgiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJNRU1CRVIiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoibWFoemFuIiwiZXhwIjoxNjM0MDIyMzQ1LCJpc3MiOiJodHRwOi8vb2VjLmNvbSIsImF1ZCI6Imh0dHA6Ly9vZWMuY29tIn0.JHjpQexz-EzzzMbuaLFiXinsZrYcbwXGB9j0-HM7EGo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": null,\n    \"name\": \"San Andres Totoltepec\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5001/v1/store:create",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"v1",
+								"store:create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }

@@ -8,6 +8,7 @@ using Mahzan.API.Application.Requests.Company;
 using Mahzan.Business.V1.CommandHandlers.Company;
 using Mahzan.Business.V1.Commands.Company;
 using Mahzan.Persistance.V1.ViewModel.Company;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Mahzan.API.Controllers.V1
 {
@@ -23,7 +24,7 @@ namespace Mahzan.API.Controllers.V1
             _createCompanyCommandHandler = createCompanyCommandHandler;
         }
         
-        //[Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPost("company:create")]
         [ProducesResponseType(typeof(CreateCompanyViewModel), (int) HttpStatusCode.OK)]
         public async Task<IActionResult> Create(

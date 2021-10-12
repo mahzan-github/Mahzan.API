@@ -168,7 +168,7 @@ create table if not exists "bank_accounts"
     company_id              uuid            NOT NULL,
     PRIMARY KEY (bank_account_id),
     FOREIGN KEY (company_id) REFERENCES companies(company_id)
-    );
+);
 
 /*  Table Name:     Product Categories
     Description:    Contiene las categorias a las que se pueden relacionar los productos
@@ -335,7 +335,7 @@ create table if not exists "menu_sub_menu"
     "title"                                  varchar(25)     NOT NULL,
     page                                     varchar(50)     NOT NULL,
     bullet                                   boolean         NOT NULL,
-    menu_selection_id                          uuid            NOT NULL,
+    menu_selection_id                        uuid            NOT NULL,
     PRIMARY KEY (menu_sub_menu_id),
     FOREIGN KEY (menu_selection_id) REFERENCES menu_selections(menu_selection_id)
     );
@@ -370,7 +370,34 @@ create table if not exists "clients"
     email                                   varchar(100)    NULL,
     comments                                varchar(100)    NULL,
     PRIMARY KEY (client_id)
-    );
+);
+
+/*  Table Name:     Tiendas
+    Description:    Contiene la información de una tienda del miembro
+*/
+create table if not exists "stores"
+(
+    store_id                                uuid            NOT NULL,
+    code                                    varchar(50)     NULL,
+    name                                    varchar(50)     NULL,
+
+    member_id                               uuid            NOT NULL,
+    PRIMARY KEY (store_id),
+    FOREIGN KEY (member_id) REFERENCES members(member_id)
+);
+
+/*  Table Name:     Cotizaciónes
+    Description:    Contiene la información de las cotizaciónes de los miembros a los clientes
+*/
+create table if not exists "quotes"
+(
+    quote_id                               uuid            NOT NULL,
+    quote_code                             varchar(50)     NULL,
+    quote_date                             timestamp       NULL,
+    client_id                              uuid            NULL,                            
+    PRIMARY KEY (quote_id),
+    FOREIGN KEY (client_id) REFERENCES clients(client_id)
+);
 
 /*  Table Name:     Tickets
     Description:    Contiene la información de los tikets
@@ -378,11 +405,22 @@ create table if not exists "clients"
 create table if not exists "tickets"
 (
     ticket_id                               uuid            NOT NULL,
-    ticker_code                             varchar(100)    NOT NULL,
+    ticket_code                             varchar(100)    NOT NULL,
     PRIMARY KEY (ticket_id)
-    --tientda
+    --tienda
     --operador (cajero)
     --transferencia
     --cliente
     --fecha:hora generación
+);
+
+/*  Table Name:     Sales
+    Description:    Contiene la información de las ventas de un miembro
+*/
+create table if not exists "sales"
+(
+    sale_id                               uuid            NOT NULL,
+    
+    ticker_code                           varchar(100)    NOT NULL,
+    PRIMARY KEY (sale_id)
 );

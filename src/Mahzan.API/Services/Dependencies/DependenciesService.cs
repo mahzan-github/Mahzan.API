@@ -5,6 +5,7 @@ using Mahzan.Business.V1.CommandHandlers.Company;
 using Mahzan.Business.V1.CommandHandlers.ProductCategories.CreateProductCategory;
 using Mahzan.Business.V1.CommandHandlers.Products.CreateProduct;
 using Mahzan.Business.V1.CommandHandlers.Sales;
+using Mahzan.Business.V1.CommandHandlers.Stores;
 using Mahzan.Business.V1.CommandHandlers.User;
 using Mahzan.Business.V1.CommandHandlers.User.LogIn;
 using Mahzan.Persistance.V1.Repositories.Company;
@@ -18,6 +19,7 @@ using Mahzan.Persistance.V1.Repositories.ProductSaleTaxes.CreateProductSaleTax;
 using Mahzan.Persistance.V1.Repositories.ProductSaleUnits.CreateProductSaleUnit;
 using Mahzan.Persistance.V1.Repositories.ProductTaxes.CreateProductTax;
 using Mahzan.Persistance.V1.Repositories.Sales;
+using Mahzan.Persistance.V1.Repositories.Stores;
 using Mahzan.Persistance.V1.Repositories.TaxRegimeCodes.GetTaxRegimeCodes;
 using Mahzan.Persistance.V1.Repositories.User.ConfirmEmail;
 using Mahzan.Persistance.V1.Repositories.User.LogIn;
@@ -85,6 +87,9 @@ namespace Mahzan.API.Services.Dependencies
             
             //Sales
             services.AddScoped<ICreateSaleRepository, CreateSaleRepository>();
+            
+            //Stores
+            services.AddScoped<ICreateStoreRepository, CreateStoreRepository>();
 
         }
 
@@ -106,6 +111,9 @@ namespace Mahzan.API.Services.Dependencies
             
             //Sales
             services.AddScoped<ICreateSaleCommandHandler, CreateSaleCommandHandler>();
+            
+            //Stores
+            services.AddScoped<ICreateStoreCommandHandler, CreateStoreCommandHandler>();
         }
         
         private static void ConfigureEventsServices(

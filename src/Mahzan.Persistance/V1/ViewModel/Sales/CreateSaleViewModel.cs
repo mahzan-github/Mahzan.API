@@ -5,6 +5,6 @@ namespace Mahzan.Persistance.V1.ViewModel.Sales
 {
     public class CreateSaleViewModel
     {
-
+    
     }
 }

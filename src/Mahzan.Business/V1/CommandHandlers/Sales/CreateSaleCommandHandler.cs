@@ -22,11 +22,11 @@ namespace Mahzan.Business.V1.CommandHandlers.Sales
         protected override async Task<CreateSaleViewModel> HandleTransaction(CreateSaleCommand command)
         {
 
-            await _createSaleRepository.Insert(new CreateSaleDto()
+            await _createSaleRepository.Insert(new CreateSaleDto
             {
-
-            }); 
                 
+            });
+
             return new CreateSaleViewModel()
             {
                 
